@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_25_202913) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_27_193616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "user_workarts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "workart_id", null: false
+    t.boolean "liked"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_workarts_on_user_id"
+    t.index ["workart_id"], name: "index_user_workarts_on_workart_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -22,8 +32,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_25_202913) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "pseudo"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "workarts", force: :cascade do |t|
+    t.string "description_short"
+    t.string "description_middle"
+    t.string "description_long"
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "primary_artist"
+    t.string "workart_title"
+  end
+
+  add_foreign_key "user_workarts", "users"
+  add_foreign_key "user_workarts", "workarts"
 end
