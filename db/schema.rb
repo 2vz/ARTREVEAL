@@ -14,6 +14,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_01_101639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "flats", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.string "address"
+  end
+
   create_table "user_workarts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "workart_id", null: false
