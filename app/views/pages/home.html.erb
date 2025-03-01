@@ -1,2 +1,11 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div>
+    <video id="live" autoplay playsinline muted height="800" width="400" style="border: 1px solid black"></video>
+</div>
+
+<script>
+    (async () => {
+            const liveVideo = document.querySelector('#live');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } }});
+            liveVideo.srcObject = stream;
+    })();
+</script>
