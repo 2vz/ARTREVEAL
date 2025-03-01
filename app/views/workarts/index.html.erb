@@ -1,0 +1,12 @@
+<h1>Your art</h1>
+<div id="workarts-list">
+  <%= @workarts.each do |workart| %>
+    <%= workart.workart_title %>
+  <% end %>
+</div>
+
+<div style="width: 100%; height: 600px;"
+  data-controller="map"
+  data-map-markers-value="<%= @markers.to_json %>"
+  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+</div>
