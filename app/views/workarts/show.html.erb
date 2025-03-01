@@ -1,12 +1,11 @@
+<div class="image-container">
+  <%= image_tag @workart.image_url, class: "workart-image"%>
+</div>
 
-
-  <div class="image-container">
-    <%= image_tag @workart.image_url, class: "workart-image"%>
-  </div>
-
-  <div class="icons">
-        <i class="fas fa-map-marker-alt"></i>
-  </div>
+<!-- Icône de carte -->
+<div class="icon-map">
+    <i class="fa-regular fa-map-location-dot"></i> <!-- Utilisation de Font Awesome pour l'icône de la carte -->
+</div>
 
 <div class="like-button" data-controller="like" data-action="click->like#toggle">
   <svg id="like-heart" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
