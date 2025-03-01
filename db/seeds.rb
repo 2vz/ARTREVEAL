@@ -5,18 +5,20 @@ UserWorkart.destroy_all
 require 'faker'
 
 # USERS : 5
-  users = 5.times.map do
+  users = 5.times.map do |i|
       first_name = Faker::Name.first_name
       last_name = Faker::Name.last_name
       email = "#{first_name.downcase}.#{last_name.downcase}@example.com"
       pseudo = "#{first_name.downcase}_#{last_name.downcase}"
+      photo = "pdp#{i+1}.jpg"
 
       User.create!(
         first_name: first_name,
         last_name: last_name,
         email: email,
         password: "password123",
-        pseudo: pseudo
+        pseudo: pseudo,
+        photo: photo
       )
     end
 
@@ -108,8 +110,8 @@ require 'faker'
 users.each do |user|
   workarts.each do |workart|
     UserWorkart.create!(
-      user: user,
-      workart: workart,
+      user:,
+      workart:,
       liked: [true, false].sample
     )
   end
