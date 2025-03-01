@@ -1,0 +1,22 @@
+.like-button {
+  background-color: #ff5864ff; /* Fond rose */
+  border-radius: 50%; /* Rendre le bouton rond */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; /* Taille du bouton */
+  height: 50px;
+  cursor: pointer; /* Changer le curseur lors du survol */
+  transition: all 0.3s ease;
+  border: none;
+
+  &:hover {
+    background-color: #ff5864ff; /* Légère couleur plus claire au survol */
+  }
+
+  svg {
+    fill: none; /* Initialement, aucun remplissage */
+    stroke: white; /* Couleur du tracé du cœur */
+    transition: fill 0.3s ease, stroke 0.3s ease;
+  }
+}
