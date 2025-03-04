@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :workarts
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -9,8 +8,11 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :pages
-  resources :workarts, only: [:index, :show]
+  resources :workarts, only: [:index, :show] do
+    resources :user_workarts, only: [:create]
+  end
 
+  resources :user_workarts, only: [:destroy]
   # Defines the root path route ("/")
   # root "posts#index"
 end

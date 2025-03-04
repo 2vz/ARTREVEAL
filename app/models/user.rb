@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :user_workarts, dependent: :destroy
+  has_many :favorites_workarts, through: :user_workarts, source: :workart
   has_one_attached :photo
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

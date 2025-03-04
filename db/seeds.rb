@@ -123,12 +123,12 @@ workarts = [
 
 # USER_WORKART
 User.all.each do |user|
-  workarts.each do |workart|
+  workarts.take(3).each do |workart|
     puts "Associating workarts to users"
     UserWorkart.create!(
       user:,
       workart:,
-      liked: [true, false].sample
+      liked: true
     )
   end
 end
