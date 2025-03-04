@@ -1,5 +1,6 @@
 class WorkartsController < ApplicationController
   before_action :set_workart, only: :show
+  before_action :set_user_workart, only: :show
 
   # GET /workarts or /workarts.json
   def index
@@ -24,5 +25,9 @@ class WorkartsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_workart
       @workart = Workart.find(params[:id])
+    end
+
+    def set_user_workart
+      @user_workart = UserWorkart.find_by(user: current_user, workart: @workart, liked: true)
     end
 end
