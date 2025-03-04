@@ -6,7 +6,7 @@ class WorkartsController < ApplicationController
   def index
     @workarts = Workart.all
     # The `geocoded` scope filters only workarts with coordinates
-    @markers = @workarts.geocoded.map do |workart|
+    @markers = @workarts.select { |workart| current_user.likes?(workart) }.map do |workart|
       {
         name: workart.workart_title,
         address: workart.address,
