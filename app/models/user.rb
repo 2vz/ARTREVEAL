@@ -7,4 +7,7 @@ class User < ApplicationRecord
 
   validates :email, :pseudo, presence: true, uniqueness: true
   validates :first_name, :last_name, presence: true
+  def likes?(workart)
+    user_workarts.exists?(workart: workart, liked: true)
+  end
 end
