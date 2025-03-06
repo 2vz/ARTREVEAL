@@ -29,8 +29,6 @@
     color: #555;
   }
 
-
-
   .icon-map i {
     font-size: 24px;
     color: #798086;
@@ -58,6 +56,7 @@
     justify-content: space-around;
     width: 100%;
     padding: 15px;
+    margin-top:auto;
   }
 
   .btn {
@@ -77,4 +76,15 @@
     background: black;
     color: white;
     }
+  }
+
+  .btn.active {
+    background-color: #64676b;
+    color: white;
+  }
+
+  .panel-manager {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100svh - 281px);
   }
