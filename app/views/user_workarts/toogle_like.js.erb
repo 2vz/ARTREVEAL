@@ -1,0 +1,9 @@
+// app/views/user_workarts/toggle_like.js.erb
+var likeButton = document.querySelector(`[data-workart-id="<%= params[:workart_id] %>"]`);
+var heartPath = likeButton.querySelector("path");
+
+if (heartPath.getAttribute('fill') === 'none') {
+  heartPath.setAttribute('fill', 'red');
+} else {
+  heartPath.setAttribute('fill', 'none');
+}

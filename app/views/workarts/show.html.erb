@@ -1,5 +1,44 @@
-<%= @workart.workart_title %>
+<div class="image-container">
+  <%= image_tag @workart.image_url, class: "workart-image" %>
+</div>
 
-<div>
-  <%= link_to "Back to workarts", workarts_path %>
+<div class="container-below-image">
+
+  <div class="reading-time">
+  <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+  </div>
+
+  <div class="icon-like-container">
+
+    <div class="icon-map">
+      <%= link_to workarts_path(@workart) do %>
+        <i class="fa-solid fa-map-location-dot"></i>
+      <% end %>
+    </div>
+
+    <div class= "like-button">
+      <% if @user_workart %>
+        <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+          <i class="fa-solid fa-heart"></i>
+        <% end %>
+      <% else %>
+        <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+          <i class="fa-regular fa-heart"></i>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="workart-details">
+  <h1 class="title"><%= @workart.workart_title %></h1>
+  <p class="description"><%= @workart.description_short %></p>
+</div>
+
+<div class="button-menu">
+  <button class="btn active">Short</button>
+  <button class="btn">Casual</button>
+  <button class="btn">Storytelled</button>
 </div>
