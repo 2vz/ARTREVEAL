@@ -1,11 +1,78 @@
-<div>
-    <video id="live" autoplay playsinline muted height="800" width="400" style="border: 1px solid black"></video>
+<div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-black">
+    <video id="live" autoplay playsinline muted class="w-100 h-100 object-fit-cover"></video>
+    
+    <!-- Bouton Snap-style -->
+    <button id="capture-btn" class="snap-btn position-absolute bottom-0 mb-4"></button>
+
+    <!-- Canvas caché pour stocker la capture -->
+    <canvas id="canvas" class="d-none"></canvas>
+
+    <!-- Conteneur pour la preview -->
+    <div id="preview-container" class="position-fixed top-0 start-0 w-100 h-100 d-none bg-black">
+        <img id="preview-image" class="w-100 h-100 object-fit-cover">
+        <button id="close-preview" class="position-absolute top-0 end-0 m-3 btn-close-white">✖</button>
+        <button id="send-preview" class="position-absolute bottom-0 end-0 m-3">Analyze workart</button>
+    </div>
 </div>
 
 <script>
     (async () => {
+        try {
             const liveVideo = document.querySelector('#live');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } }});
+            const captureBtn = document.querySelector('#capture-btn');
+            const canvas = document.querySelector('#canvas');
+            const ctx = canvas.getContext('2d');
+            const previewContainer = document.querySelector('#preview-container');
+            const previewImage = document.querySelector('#preview-image');
+            const closePreview = document.querySelector('#close-preview');
+            const sendPreview = document.querySelector('#send-preview');
+
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
             liveVideo.srcObject = stream;
+
+            captureBtn.addEventListener('click', (event) => {
+                canvas.width = liveVideo.videoWidth;
+                canvas.height = liveVideo.videoHeight;
+                ctx.drawImage(liveVideo, 0, 0, canvas.width, canvas.height);
+
+                previewImage.src = canvas.toDataURL('image/png');
+                previewContainer.classList.remove("d-none");
+            });
+
+            closePreview.addEventListener('click', () => {
+                previewContainer.classList.add("d-none");
+                });
+
+            sendPreview.addEventListener('click', ()=> {
+                console.log('ça fonctionne')
+            })
+        } catch (error) {
+            console.error("Error accessing camera:", error);
+        }
     })();
 </script>
+
+<style>
+    .snap-btn {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 5px solid rgba(255, 255, 255, 0.6);
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        outline: none;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out;
+    }
+
+    .snap-btn:active {
+        transform: translateX(-50%) scale(0.9);
+    }
+
+    .disable-dbl-tap-zoom {
+        touch-action: manipulation;
+    }
+</style>
