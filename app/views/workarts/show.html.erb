@@ -1,13 +1,13 @@
 <div class="image-container">
-  <%= image_tag @workart.image_url, class: "workart-image" %>
+<%= image_tag @workart.image_url, class: "workart-image" %>
 </div>
-
 
 <div data-controller="panel-manager" class="panel-manager">
 
   <div data-panel-manager-target="panel">
     <div class="container-below-image">
       <div class="reading-time" id="reading-time">
+      <i class="fa-solid fa-book-open"></i>
         <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
       </div>
       <div class="icon-like-container">
@@ -39,6 +39,7 @@
   <div data-panel-manager-target="panel" class="d-none">
     <div class="container-below-image">
       <div class="reading-time" id="reading-time">
+      <i class="fa-solid fa-book-open"></i>
         <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
       </div>
       <div class="icon-like-container">
@@ -70,6 +71,7 @@
   <div data-panel-manager-target="panel" class="d-none">
     <div class="container-below-image">
       <div class="reading-time" id="reading-time">
+      <i class="fa-solid fa-book-open"></i>
         <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
       </div>
       <div class="icon-like-container">
@@ -99,9 +101,8 @@
   </div>
 
   <div class="button-menu">
-    <button class="btn active" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short">Short</button>
-    <button class="btn" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">Casual</button>
-    <button class="btn" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">Storytelled</button>
+    <button class="btn active" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short"><i class="fa-solid fa-clock"></i> Short</button>
+    <button class="btn" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual"><i class="fa-solid fa-file"></i> Casual</button>
+    <button class="btn" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled"><i class="fa-solid fa-book"></i> Storytelled</button>
   </div>
-
 </div>
