@@ -1,0 +1,14 @@
+/* Styles spécifiques pour l'image dans le pop-up */
+img {
+  max-width: 100%;
+  max-height: 300px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px; /* Bordure arrondie plus subtile */
+  transition: transform 0.3s ease; /* Transition fluide pour le zoom */
+}
+
+/* Pour un effet au survol */
+img:hover {
+  transform: scale(1.05); /* Zoom léger au survol */
+}
