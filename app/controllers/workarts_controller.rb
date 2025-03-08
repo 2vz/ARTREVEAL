@@ -1,3 +1,5 @@
+require 'base64'
+
 class WorkartsController < ApplicationController
   before_action :set_workart, only: :show
   before_action :set_user_workart, only: :show
@@ -18,6 +20,11 @@ class WorkartsController < ApplicationController
 
   # GET /workarts/1 or /workarts/1.json
   def show
+  end
+
+  def scan
+    base64_string = params[:image_data]
+    
   end
 
   private

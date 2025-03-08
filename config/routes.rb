@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :user_workarts, only: [:create]
   end
 
+  post :scan, to: 'workarts#scan'
+
   resources :user_workarts, only: [:destroy]
   # Defines the root path route ("/")
   # root "posts#index"

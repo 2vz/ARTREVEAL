@@ -13,6 +13,11 @@
         <button id="close-preview" class="position-absolute top-0 end-0 m-3 btn-close-white">✖</button>
         <button id="send-preview" class="position-absolute bottom-0 end-0 m-3">Analyze workart</button>
     </div>
+
+    <%= form_with url: scan_path, local: true, multipart: true, id: "photo-form" do |f| %> 
+        <%= f.hidden_field :image_data, id: "image-data" %> 
+        <%= f.submit "Analyser la photo", id:'form-submit' %>
+    <% end %>
 </div>
 
 <script>
@@ -26,6 +31,9 @@
             const previewImage = document.querySelector('#preview-image');
             const closePreview = document.querySelector('#close-preview');
             const sendPreview = document.querySelector('#send-preview');
+            const photoInput = document.getElementById('image-data');
+            const form = document.getElementById('photo-form');
+            const formSubmit = document.getElementById('form-submit');
 
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
             liveVideo.srcObject = stream;
@@ -37,6 +45,7 @@
 
                 previewImage.src = canvas.toDataURL('image/png');
                 previewContainer.classList.remove("d-none");
+                photoInput.value = canvas.toDataURL('image/png');
             });
 
             closePreview.addEventListener('click', () => {
@@ -44,7 +53,7 @@
                 });
 
             sendPreview.addEventListener('click', ()=> {
-                console.log('ça fonctionne')
+                formSubmit.click()
             })
         } catch (error) {
             console.error("Error accessing camera:", error);
