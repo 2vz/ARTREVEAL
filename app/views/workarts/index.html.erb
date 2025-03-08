@@ -1,11 +1,67 @@
-<div
-  data-controller="map"
-  data-map-markers-value="<%= @markers.to_json %>"
-  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
-  style="width: 100%; height: 1500px;">
+<div data-controller="map"
+     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+     data-map-markers-value="<%= @markers.to_json %>">
+
+  <div id="map" style="width: 100%; height: 800px;"></div>
+
+  <!-- Conteneur pour l'image -->
+  <style>
+/* Conteneur global pour le contenu du pop-up */
+.mapboxgl-popup-content {
+  display: flex;
+  gap: 10px; /* Réduit l'espacement entre l'image et le texte */
+  padding: 8px; /* Réduit l'espace autour du contenu */
+  align-items: center; /* Aligner les éléments au début */
+  width: 250px; /* Réduit la largeur du pop-up */
+  font-size: 12px; /* Réduit la taille de la police générale */
+}
+
+/* Conteneur de l'image */
+.mapbox-image-container {
+  flex-shrink: 0; /* Empêche l'image de se réduire */
+  width: 60px; /* Réduit la largeur de l'image */
+  height: 60px; /* Réduit la hauteur de l'image */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centrer l'image */
+}
+
+/* Style de l'image */
+img {
+  max-width: 50%; /* L'image prend toute la largeur de son conteneur */
+  max-height: 50%; /* L'image prend toute la hauteur de son conteneur */
+  object-fit: contain; /* Maintient l'aspect ratio de l'image */
+  border-radius: 10px; /* Bordure arrondie pour l'image */
+  transition: transform 0.3s ease; /* Transition fluide pour le zoom */
+}
+
+/* Conteneur du texte */
+.mapbox-text-container {
+  display: flex;
+  flex-direction: column; /* Le texte sera en colonne */
+  justify-content: flex-start; /* Alignement du texte en haut */
+  flex-grow: 1; /* Le texte prend tout l'espace restant */
+  padding: 0; /* Réduit l'espace autour du texte */
+}
+
+/* Style pour le titre (h3) */
+.mapboxgl-popup h3 {
+  margin: 0;
+  font-size: 14px; /* Taille réduite du titre */
+  font-weight: bold; /* Titre en gras */
+}
+
+/* Style pour la description (p) */
+.mapboxgl-popup p {
+  font-size: 12px; /* Taille réduite pour la description */
+  margin: 3px 0; /* Réduit l'espacement entre le titre et la description */
+}
+
+/* Effet de zoom au survol de l'image */
+.mapboxgl-popup img:hover {
+  transform: scale(1.05); /* Zoom léger au survol */
+}
+
+  </style>
+
 </div>
-
-
-<% @workarts.each do |workart| %>
-  <p><%= workart.workart_title %></p>
-<% end %>
