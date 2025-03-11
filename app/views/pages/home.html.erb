@@ -14,7 +14,7 @@
         <button id="send-preview" class="position-absolute bottom-0 end-0 m-3">Analyze workart</button>
     </div>
 
-    <%= form_with url: scan_path, local: true, multipart: true, id: "photo-form" do |f| %> 
+    <%= form_with url: scan_path, local: true, multipart: true, id: "photo-form", class: "d-none" do |f| %> 
         <%= f.hidden_field :image_data, id: "image-data" %> 
         <%= f.submit "Analyser la photo", id:'form-submit' %>
     <% end %>
