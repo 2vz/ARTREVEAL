@@ -1,3 +1,10 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineLite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/plugins/CSSPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/easing/EasePack.min.js"></script>
+
+
 <div class="image-container">
 <%= image_tag @workart.image_url, class: "workart-image" %>
 </div>
@@ -100,9 +107,28 @@
     </div>
   </div>
 
-  <div class="button-menu">
-    <button class="btn active" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short"><i class="fa-solid fa-clock"></i> Short</button>
-    <button class="btn" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual"><i class="fa-solid fa-file"></i> Casual</button>
-    <button class="btn" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled"><i class="fa-solid fa-book"></i> Storytelled</button>
+<% if false %>
+  <p>TENTATIVE AUDIO :</p>
+<%= turbo_stream_from "audio-stream" %>
+<%= render "audio/form" %>
+<br/>
+<h2>Previous responses</h2>
+<div id="audio-container"></div>
+<% end %>
+
+<div class="button-menu">
+
+<div class="button-menu">
+  <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-secondary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
+    <label class="btn btn-outline-secondary" for="btnradio2"><i class="fa-solid fa-clock"></i> Casual</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
+    <label class="btn btn-outline-secondary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-clock"></i> Storytelled</label>
   </div>
+</div>
+
 </div>
