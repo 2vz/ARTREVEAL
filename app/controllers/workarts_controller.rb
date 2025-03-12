@@ -18,8 +18,68 @@ class WorkartsController < ApplicationController
   end
 
   # GET /workarts/1 or /workarts/1.json
-  def show
+# app/controllers/workarts_controller.rb
+# app/controllers/workarts_controller.rb
+# def show
+#   @workart = Workart.find(params[:id])
+#   @audio_path = TextToSpeechGeneratorService.call(@workart.description_long)
+# end
+
+def show
+  @workart = Workart.find(params[:id])
+
+  # Générer les trois versions audio
+  audio_paths = {}
+
+  # Débogage
+  puts "Description courte: #{@workart.description_short.present? ? 'présente' : 'absente'}"
+  puts "Description moyenne: #{@workart.description_middle.present? ? 'présente' : 'absente'}"
+  puts "Description longue: #{@workart.description_long.present? ? 'présente' : 'absente'}"
+
+  if @workart.description_short.present?
+    short_source_path = TextToSpeechGeneratorService.call(@workart.description_short)
+    if short_source_path.present?
+      short_filename = "workart_#{@workart.id}_short_#{Time.now.to_i}.mp3"
+      short_public_path = Rails.root.join('public', 'audios', short_filename)
+      FileUtils.mkdir_p(File.dirname(short_public_path))
+      FileUtils.cp(short_source_path, short_public_path)
+      audio_paths[:short] = "/audios/#{short_filename}"
+      puts "Audio court généré: #{short_public_path}"
+    end
   end
+
+  if @workart.description_middle.present?
+    middle_source_path = TextToSpeechGeneratorService.call(@workart.description_middle)
+    if middle_source_path.present?
+      middle_filename = "workart_#{@workart.id}_middle_#{Time.now.to_i}.mp3"
+      middle_public_path = Rails.root.join('public', 'audios', middle_filename)
+      FileUtils.mkdir_p(File.dirname(middle_public_path))
+      FileUtils.cp(middle_source_path, middle_public_path)
+      audio_paths[:middle] = "/audios/#{middle_filename}"
+      puts "Audio middle généré: #{middle_public_path}"
+    end
+  end
+
+  if @workart.description_long.present?
+    long_source_path = TextToSpeechGeneratorService.call(@workart.description_long)
+    if long_source_path.present?
+      long_filename = "workart_#{@workart.id}_long_#{Time.now.to_i}.mp3"
+      long_public_path = Rails.root.join('public', 'audios', long_filename)
+      FileUtils.mkdir_p(File.dirname(long_public_path))
+      FileUtils.cp(long_source_path, long_public_path)
+      audio_paths[:long] = "/audios/#{long_filename}"
+      puts "Audio long généré: #{long_public_path}"
+    end
+  end
+
+  # Répéter pour les autres descriptions...
+
+  # Débogage
+  puts "Chemins audio générés: #{audio_paths.inspect}"
+
+  # Passer les chemins audio à la vue
+  @audio_paths = audio_paths
+end
 
   private
 
