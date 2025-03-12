@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
 
   resources :user_workarts, only: [:destroy]
-  post "tts",to: "pages#tts", as: :tts
+  post "tts", to: "pages#tts", as: :tts
   # Defines the root path route ("/")
   # root "posts#index"
 end
