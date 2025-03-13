@@ -19,7 +19,7 @@
       </div>
       <div class="icon-like-container">
         <div class="icon-map">
-          <%= link_to workarts_path(@workart) do %>
+          <%= link_to workarts_path do %>
             <i class="fa-solid fa-map-location-dot"></i>
           <% end %>
         </div>
@@ -139,11 +139,9 @@
   </div>
 <% end  %>
 
-
     <div class="d-flex justify-content-center align-items-center">
     <button id="openModal" class="btn btn-outline-secondary d-flex" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Ancrer ce souvenir dans le temps 💌</button>
     </div>
-
 
 
 <div class="button-menu">
@@ -241,7 +239,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-
 
 </script>
