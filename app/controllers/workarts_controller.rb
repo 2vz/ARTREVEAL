@@ -75,6 +75,28 @@ def show
   # @audio_paths = audio_paths
 end
 
+
+
+
+def schedule_email
+  recipient = params[:recipient]
+  subject = params[:subject]
+  content = params[:content]
+  send_at = Time.parse(params[:send_at])
+
+  # Vérifiez que la date est dans le futur
+  if send_at > Time.current
+    ScheduledEmailJob.set(wait_until: send_at).perform_later(recipient, subject, content)
+    redirect_to @your_resource, notice: "Email programmé pour #{send_at.strftime('%d/%m/%Y à %H:%M')}"
+  else
+    redirect_to @your_resource, alert: "La date doit être dans le futur"
+  end
+end
+
+
+
+
+
   private
 
     def set_workart

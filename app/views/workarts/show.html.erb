@@ -34,6 +34,7 @@
             <% end %>
           <% end %>
         </div>
+
       </div>
     </div>
 
@@ -138,6 +139,13 @@
   </div>
 <% end  %>
 
+
+    <div class="d-flex justify-content-center align-items-center">
+    <button id="openModal" class="btn btn-outline-secondary d-flex" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Ancrer ce souvenir dans le temps 💌</button>
+    </div>
+
+
+
 <div class="button-menu">
 
 <div class="button-menu">
@@ -154,3 +162,86 @@
 </div>
 
 </div>
+
+<div id="emailModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Futur moi, souviens-toi de ça !</h3>
+
+    <div class="modal-image-container">
+      <%= image_tag @workart.image_url, class: "modal-workart-image" %>
+      <div class="image-overlay">
+        <div class="overlay-content">
+          <h4 class="artwork-title"><%= @workart.workart_title %></h4>
+          <p class="artwork-artist"><%= @workart.primary_artist %></p>
+          <p class="artwork-location"><%= @workart.address %></p>
+          <p class="artwork-date"><%= Date.current.strftime("%d %B %Y") %></p>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
+      <div class="field">
+        <%= f.label :recipient, "Mon mail :" %>
+        <%= f.email_field :recipient, required: true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :content, "Message :" %>
+        <%= f.text_area :content, rows: 5, required: true, placeholder: "Ai-je aimé l'oeuvre ? Avec qui l'ai-je visité ?" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :time_option, "Envoyer dans :" %>
+        <div class="time-options">
+          <% future_options = {
+            "6 mois" => 6.months.from_now,
+            "1 an" => 1.year.from_now,
+            "2 ans" => 2.years.from_now,
+            "5 ans" => 5.years.from_now,
+            "10 ans" => 10.years.from_now
+          } %>
+
+          <% future_options.each do |label, date| %>
+            <div class="time-option">
+              <%= f.radio_button :send_at, date.to_date, id: "option_#{label.parameterize}", required: true %>
+              <%= f.label :send_at, label, value: date.to_date, for: "option_#{label.parameterize}" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Programmer l'email" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("emailModal");
+  const openBtn = document.getElementById("openModal");
+  const closeBtn = document.querySelector(".close");
+
+  openBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+});
+
+
+
+</script>

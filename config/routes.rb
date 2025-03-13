@@ -17,4 +17,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  resources :workarts do
+    member do
+      post :schedule_email
+    end
+  end
 end
