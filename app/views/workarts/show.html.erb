@@ -107,35 +107,36 @@
     </div>
   </div>
 
+<% if false %>
+  <div class="audio-players" style="text-align:center;">
+    <% if @audio_paths[:short].present? %>
+      <div id="audio-short" class="audio-player">
+        <audio controls data-panel-manager-target="audioShort">
+          <source src="<%= @audio_paths[:short] %>" type="audio/mpeg">
+          Votre navigateur ne supporte pas l'élément audio.
+        </audio>
+      </div>
+    <% end %>
 
-<div class="audio-players" style="text-align:center;">
-  <% if @audio_paths[:short].present? %>
-    <div id="audio-short" class="audio-player">
-      <audio controls data-panel-manager-target="audioShort">
-        <source src="<%= @audio_paths[:short] %>" type="audio/mpeg">
-        Votre navigateur ne supporte pas l'élément audio.
-      </audio>
-    </div>
-  <% end %>
+    <% if @audio_paths[:middle].present? %>
+      <div id="audio-middle" class="audio-player d-none">
+        <audio controls data-panel-manager-target="audioMiddle">
+          <source src="<%= @audio_paths[:middle] %>" type="audio/mpeg">
+          Votre navigateur ne supporte pas l'élément audio.
+        </audio>
+      </div>
+    <% end %>
 
-  <% if @audio_paths[:middle].present? %>
-    <div id="audio-middle" class="audio-player d-none">
-      <audio controls data-panel-manager-target="audioMiddle">
-        <source src="<%= @audio_paths[:middle] %>" type="audio/mpeg">
-        Votre navigateur ne supporte pas l'élément audio.
-      </audio>
-    </div>
-  <% end %>
-
-  <% if @audio_paths[:long].present? %>
-    <div id="audio-long" class="audio-player d-none">
-      <audio controls data-panel-manager-target="audioLong">
-        <source src="<%= @audio_paths[:long] %>" type="audio/mpeg">
-        Votre navigateur ne supporte pas l'élément audio.
-      </audio>
-    </div>
-  <% end %>
-</div>
+    <% if @audio_paths[:long].present? %>
+      <div id="audio-long" class="audio-player d-none">
+        <audio controls data-panel-manager-target="audioLong">
+          <source src="<%= @audio_paths[:long] %>" type="audio/mpeg">
+          Votre navigateur ne supporte pas l'élément audio.
+        </audio>
+      </div>
+    <% end %>
+  </div>
+<% end  %>
 
 <div class="button-menu">
 
