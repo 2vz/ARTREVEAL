@@ -1,28 +1,103 @@
 require 'base64'
 require 'httparty'
+require 'net/http'
+require 'json'
 
 class WorkartsController < ApplicationController
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, raise: false
   before_action :set_workart, only: :show
   before_action :set_user_workart, only: :show
-
   # GET /workarts or /workarts.json
   def index
     @workarts = Workart.all
     # The `geocoded` scope filters only workarts with coordinates
     @markers = @workarts.select { |workart| current_user.likes?(workart) }.map do |workart|
       {
+        imageUrl: workart.image_url,
         name: workart.workart_title,
         address: workart.address,
         lat: workart.latitude,
-        lng: workart.longitude
+        lng: workart.longitude,
+
       }
     end
   end
 
   # GET /workarts/1 or /workarts/1.json
-  def show
+# app/controllers/workarts_controller.rb
+# app/controllers/workarts_controller.rb
+# def show
+#   @workart = Workart.find(params[:id])
+#   @audio_path = TextToSpeechGeneratorService.call(@workart.description_long)
+# end
+
+def show
+  # @workart = Workart.find(params[:id])
+
+  # audio_paths = {}
+
+  # puts "Description courte: #{@workart.description_short.present? ? 'présente' : 'absente'}"
+  # puts "Description moyenne: #{@workart.description_middle.present? ? 'présente' : 'absente'}"
+  # puts "Description longue: #{@workart.description_long.present? ? 'présente' : 'absente'}"
+
+  # if @workart.description_short.present?
+  #   short_source_path = TextToSpeechGeneratorService.call(@workart.description_short)
+  #   if short_source_path.present?
+  #     short_filename = "workart_#{@workart.id}_short_#{Time.now.to_i}.mp3"
+  #     short_public_path = Rails.root.join('public', 'audios', short_filename)
+  #     FileUtils.mkdir_p(File.dirname(short_public_path))
+  #     FileUtils.cp(short_source_path, short_public_path)
+  #     audio_paths[:short] = "/audios/#{short_filename}"
+  #     puts "Audio court généré: #{short_public_path}"
+  #   end
+  # end
+
+  # if @workart.description_middle.present?
+  #   middle_source_path = TextToSpeechGeneratorService.call(@workart.description_middle)
+  #   if middle_source_path.present?
+  #     middle_filename = "workart_#{@workart.id}_middle_#{Time.now.to_i}.mp3"
+  #     middle_public_path = Rails.root.join('public', 'audios', middle_filename)
+  #     FileUtils.mkdir_p(File.dirname(middle_public_path))
+  #     FileUtils.cp(middle_source_path, middle_public_path)
+  #     audio_paths[:middle] = "/audios/#{middle_filename}"
+  #     puts "Audio middle généré: #{middle_public_path}"
+  #   end
+  # end
+
+  # if @workart.description_long.present?
+  #   long_source_path = TextToSpeechGeneratorService.call(@workart.description_long)
+  #   if long_source_path.present?
+  #     long_filename = "workart_#{@workart.id}_long_#{Time.now.to_i}.mp3"
+  #     long_public_path = Rails.root.join('public', 'audios', long_filename)
+  #     FileUtils.mkdir_p(File.dirname(long_public_path))
+  #     FileUtils.cp(long_source_path, long_public_path)
+  #     audio_paths[:long] = "/audios/#{long_filename}"
+  #     puts "Audio long généré: #{long_public_path}"
+  #   end
+  # end
+
+  # puts "Chemins audio générés: #{audio_paths.inspect}"
+
+  # @audio_paths = audio_paths
+end
+
+
+
+
+def schedule_email
+  recipient = params[:recipient]
+  subject = params[:subject]
+  content = params[:content]
+  send_at = Time.parse(params[:send_at])
+
+  # Vérifiez que la date est dans le futur
+  if send_at > Time.current
+    # ScheduledEmailJob.set(wait_until: send_at).perform_later(recipient, subject, content)
+    redirect_to @your_resource, notice: "Email programmé pour #{send_at.strftime('%d/%m/%Y à %H:%M')}"
+  else
+    redirect_to @your_resource, alert: "La date doit être dans le futur"
   end
+end
 
   def scan
     base64_string = params[:image_data]
@@ -68,7 +143,6 @@ class WorkartsController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_workart
       @workart = Workart.find(params[:id])
     end
@@ -113,9 +187,6 @@ Your JSON object must include exactly the following keys:
 - **"longitude"**: number or null  
   → The geographic longitude of the exhibition location. If unknown, return `null`.
 
-- **"image_url"**: string  
-  → A **verified working URL** linking to a high-quality image (JPG or PNG) of the official artwork.  
-
 **Strict Instructions for "image_url":**  
 1. **The image must come only from official and reliable sources** such as:  
    - **Wikimedia Commons** (https://commons.wikimedia.org)  
@@ -140,65 +211,63 @@ Your entire response must be exactly **one valid JSON object** with no additiona
 
       TEXT
     end
-
+    
     def workart_picture(title, author)
-      token = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IiIsInN1YmplY3RfYXBwbGljYXRpb24iOiIzMmIyNmVlZC1lZDA5LTRiNmItOTk1Zi1mZmEwN2YwNmQxNTQiLCJleHAiOjE3NDIwNTM0NTgsImlhdCI6MTc0MTQ0ODY1OCwiYXVkIjoiMzJiMjZlZWQtZWQwOS00YjZiLTk5NWYtZmZhMDdmMDZkMTU0IiwiaXNzIjoiR3Jhdml0eSIsImp0aSI6IjY3Y2M2NWQyMWIwYWRiMDAxMmZiODIxOSJ9.jlaXdKESkOv5sWN14KjYCqETTIaWMc_oAHfDyJqSdso"
-
-      def fetch_best_artwork(query, author, token)
-        search_url = "https://api.artsy.net/api/search?q=#{CGI.escape(query)}"
-        response = HTTParty.get(search_url, headers: { "X-XAPP-Token" => token })
-        return nil unless response.success?
+      # 1️⃣ Essayer Wikimedia en priorité
+      wiki_url = "https://en.wikipedia.org/w/api.php"
+      wiki_params = {
+        action: "query",
+        titles: title,
+        prop: "pageimages",
+        pithumbsize: 1000,
+        format: "json"
+      }
     
-        results = response.parsed_response.dig("_embedded", "results")
-        return nil if results.nil? || results.empty?
+      wiki_uri = URI(wiki_url)
+      wiki_uri.query = URI.encode_www_form(wiki_params)
+      wiki_response = Net::HTTP.get(wiki_uri)
+      wiki_json = JSON.parse(wiki_response)
     
-        # Trier les résultats pour trouver l’œuvre officielle
-        sorted_results = results.select { |res|
-          res["type"] == "artwork"
-        }.sort_by { |res|
-          # Prioriser les titres exacts + artistes correspondants
-          score = 0
-          score += 3 if res["title"].casecmp?(query) # Exact match
-          score += 2 if res["title"].downcase.include?(query.downcase) # Contient le titre
-          score += 1 if res["title"].split.any? { |word| query.downcase.include?(word.downcase) } # Partage des mots clés
-          score
-        }.reverse # Le plus pertinent en premier
+      wiki_page = wiki_json.dig("query", "pages")&.values&.first
+      wiki_image_url = wiki_page&.dig("thumbnail", "source")
     
-        # Vérifier si l’artiste correspond
-        sorted_results.each do |result|
-          artwork_url = result.dig("_links", "self", "href")
-          next unless artwork_url
+      return wiki_image_url if wiki_image_url # ✅ Image trouvée sur Wikimedia
     
-          artwork_data = HTTParty.get(artwork_url, headers: { "X-XAPP-Token" => token }).parsed_response
-          artist_url = artwork_data.dig("_links", "artists", "href")
+      # 2️⃣ Fallback : Chercher l'artiste sur Artsy
+      artist_url = "https://api.artsy.net/api/artists?term=#{URI.encode_www_form_component(author)}"
+      artist_uri = URI(artist_url)
+      artist_request = Net::HTTP::Get.new(artist_uri)
+      artist_request["X-Xapp-Token"] = ARTSY_API_TOKEN
     
-          if artist_url
-            artist_response = HTTParty.get(artist_url, headers: { "X-XAPP-Token" => token })
-            artists = artist_response.parsed_response.dig("_embedded", "artists")
-            if artists&.any? { |artist| artist["name"].casecmp?(author) }
-              return artwork_url # On a trouvé la bonne œuvre !
-            end
-          end
-        end
+      artist_response = Net::HTTP.start(artist_uri.host, artist_uri.port, use_ssl: true) { |http| http.request(artist_request) }
+      artist_json = JSON.parse(artist_response.body)
     
-        nil # Si aucun match parfait n'est trouvé
-      end
+      artist = artist_json.dig("_embedded", "artists")&.find { |a| normalize(a["name"]) == normalize(author) }
+      return "No image found" unless artist # ❌ Aucun artiste trouvé sur Artsy
     
-      # 1️⃣ Essayer d’abord avec le titre complet
-      artwork_url = fetch_best_artwork(title, author, token)
+      artist_id = artist["id"]
     
-      # 2️⃣ Si aucun résultat précis, essayer une recherche plus large avec seulement l’artiste
-      if artwork_url.nil?
-        artwork_url = fetch_best_artwork(author, "", token)
-      end
+      # 3️⃣ Chercher l’œuvre sur Artsy
+      artwork_url = "https://api.artsy.net/api/artworks?artist_id=#{artist_id}"
+      artwork_uri = URI(artwork_url)
+      artwork_request = Net::HTTP::Get.new(artwork_uri)
+      artwork_request["X-Xapp-Token"] = ARTSY_API_TOKEN
     
-      return nil unless artwork_url
+      artwork_response = Net::HTTP.start(artwork_uri.host, artwork_uri.port, use_ssl: true) { |http| http.request(artwork_request) }
+      artwork_json = JSON.parse(artwork_response.body)
     
-      # 3️⃣ Fetch l'URL de l'œuvre et récupérer l'image officielle
-      image_url = HTTParty.get(artwork_url, headers: { "X-XAPP-Token" => token })
-                           .parsed_response.dig("_links", "image", "href")
-                           &.gsub("{image_version}", "large")
+      artwork = artwork_json.dig("_embedded", "artworks")&.find { |art| normalize(art["title"]) == normalize(title) }
+      return "No image found" unless artwork # ❌ Aucun artwork correspondant trouvé
     
-      return image_url
+      # 4️⃣ Utiliser **toujours** la version "large" pour l'image
+      artsy_image_url = artwork["_links"]["image"]["href"].gsub("{image_version}", "large")
+    
+      return artsy_image_url || "No image found"
+    end
+    
+    # 🔹 Fonction de normalisation (supprime les majuscules, espaces superflus et accents)
+    def normalize(text)
+      return "" if text.nil?
+      text.downcase.strip.gsub(/[^\w\s]/, '')
     end
 end
