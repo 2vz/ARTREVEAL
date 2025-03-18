@@ -1,0 +1,21 @@
+<div id="audio-<%= player_id %>" class="modern-audio-player <%= custom_class %>">
+  <div class="player-wrapper">
+    <button class="play-button">
+      <i class="play-icon" data-panel-manager-target="playIcon" data-action="click->panel-manager#play<%= player_id %>">▶</i>
+      <i class="pause-icon" style="display:none;" data-panel-manager-target="pauseIcon" data-action="click->panel-manager#pause<%= player_id %>">⏸</i>
+    </button>
+    <div class="player-content">
+      <div class="progress-container" data-panel-manager-target="progressContainer">
+        <div class="progress-bar">
+          <div class="progress" data-panel-manager-target="progress"></div>
+        </div>
+      </div>
+      <div class="player-info">
+        <span class="player-time" data-panel-manager-target="timeDisplay">0:00 / 0:00</span>
+      </div>
+    </div>
+  </div>
+  <audio data-panel-manager-target="<%= audio_target %>" data-panel-manager-target="audio">
+    <source src="<%= audio_source %>" type="audio/mpeg">
+  </audio>
+</div>

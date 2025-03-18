@@ -9,155 +9,167 @@
 <%= image_tag @workart.image_url, class: "workart-image" %>
 </div>
 
-<div data-controller="panel-manager" class="panel-manager">
+<div data-controller="panel-manager">
+  <div class="panel-manager">
 
-  <div data-panel-manager-target="panel">
-    <div class="container-below-image">
-      <div class="reading-time" id="reading-time">
-      <i class="fa-solid fa-book-open"></i>
-        <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+    <div data-panel-manager-target="panel">
+      <div class="container-below-image">
+        <div class="reading-time" id="reading-time">
+        <i class="fa-solid fa-book-open"></i>
+          <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+        </div>
+        <div class="icon-like-container">
+          <div class="icon-map">
+            <%= link_to workarts_path do %>
+              <i class="fa-solid fa-map-location-dot"></i>
+            <% end %>
+          </div>
+          <div class= "like-button">
+            <% if @user_workart %>
+              <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                <i class="fa-solid fa-heart"></i>
+              <% end %>
+            <% else %>
+              <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                <i class="fa-regular fa-heart"></i>
+              <% end %>
+            <% end %>
+          </div>
+
+        </div>
       </div>
-      <div class="icon-like-container">
-        <div class="icon-map">
-          <%= link_to workarts_path do %>
-            <i class="fa-solid fa-map-location-dot"></i>
-          <% end %>
-        </div>
-        <div class= "like-button">
-          <% if @user_workart %>
-            <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
-              <i class="fa-solid fa-heart"></i>
-            <% end %>
-          <% else %>
-            <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
-              <i class="fa-regular fa-heart"></i>
-            <% end %>
-          <% end %>
-        </div>
 
-      </div>
-    </div>
 
-    <div class="workart-details">
-      <h1 class="title"><%= @workart.workart_title %></h1>
-      <p class="description" id="description"><%= @workart.description_short %></p>
-    </div>
-  </div>
+<div class="d-flex justify-content-center align-items-center">
+  <button id="openModal" class="btn btn-outline-secondary d-flex" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Ancrer ce souvenir dans le temps 💌</button>
+</div>
 
-  <div data-panel-manager-target="panel" class="d-none">
-    <div class="container-below-image">
-      <div class="reading-time" id="reading-time">
-      <i class="fa-solid fa-book-open"></i>
-        <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
-      </div>
-      <div class="icon-like-container">
-        <div class="icon-map">
-          <%= link_to workarts_path(@workart) do %>
-            <i class="fa-solid fa-map-location-dot"></i>
-          <% end %>
-        </div>
-        <div class= "like-button">
-          <% if @user_workart %>
-            <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
-              <i class="fa-solid fa-heart"></i>
-            <% end %>
-          <% else %>
-            <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
-              <i class="fa-regular fa-heart"></i>
-            <% end %>
-          <% end %>
-        </div>
+
+
+      <div class="workart-details">
+        <h1 class="title"><%= @workart.workart_title %></h1>
+        <p class="description" id="description"><%= @workart.description_short %></p>
       </div>
     </div>
 
-    <div class="workart-details">
-      <h1 class="title"><%= @workart.workart_title %></h1>
-      <p class="description" id="description"><%= @workart.description_middle %></p>
-    </div>
-  </div>
-
-  <div data-panel-manager-target="panel" class="d-none">
-    <div class="container-below-image">
-      <div class="reading-time" id="reading-time">
-      <i class="fa-solid fa-book-open"></i>
-        <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
-      </div>
-      <div class="icon-like-container">
-        <div class="icon-map">
-          <%= link_to workarts_path(@workart) do %>
-            <i class="fa-solid fa-map-location-dot"></i>
-          <% end %>
+    <div data-panel-manager-target="panel" class="d-none">
+      <div class="container-below-image">
+        <div class="reading-time" id="reading-time">
+        <i class="fa-solid fa-book-open"></i>
+          <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
         </div>
-        <div class= "like-button">
-          <% if @user_workart %>
-            <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
-              <i class="fa-solid fa-heart"></i>
+        <div class="icon-like-container">
+          <div class="icon-map">
+            <%= link_to workarts_path(@workart) do %>
+              <i class="fa-solid fa-map-location-dot"></i>
             <% end %>
-          <% else %>
-            <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
-              <i class="fa-regular fa-heart"></i>
+          </div>
+          <div class= "like-button">
+            <% if @user_workart %>
+              <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                <i class="fa-solid fa-heart"></i>
+              <% end %>
+            <% else %>
+              <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                <i class="fa-regular fa-heart"></i>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
+
+      <div class="workart-details">
+        <h1 class="title"><%= @workart.workart_title %></h1>
+        <p class="description" id="description"><%= @workart.description_middle %></p>
+      </div>
     </div>
 
-    <div class="workart-details">
-      <h1 class="title"><%= @workart.workart_title %></h1>
-      <p class="description" id="description"><%= @workart.description_long %></p>
-    </div>
-  </div>
+    <div data-panel-manager-target="panel" class="d-none">
+      <div class="container-below-image">
+        <div class="reading-time" id="reading-time">
+        <i class="fa-solid fa-book-open"></i>
+          <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+        </div>
+        <div class="icon-like-container">
+          <div class="icon-map">
+            <%= link_to workarts_path(@workart) do %>
+              <i class="fa-solid fa-map-location-dot"></i>
+            <% end %>
+          </div>
+          <div class= "like-button">
+            <% if @user_workart %>
+              <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                <i class="fa-solid fa-heart"></i>
+              <% end %>
+            <% else %>
+              <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                <i class="fa-regular fa-heart"></i>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
-<% if false %>
-  <div class="audio-players" style="text-align:center;">
+      <div class="workart-details">
+        <h1 class="title"><%= @workart.workart_title %></h1>
+        <p class="description" id="description"><%= @workart.description_long %></p>
+      </div>
+    </div>
+
+
+  <div class="audio-players">
     <% if @audio_paths[:short].present? %>
-      <div id="audio-short" class="audio-player">
-        <audio controls data-panel-manager-target="audioShort">
-          <source src="<%= @audio_paths[:short] %>" type="audio/mpeg">
-          Votre navigateur ne supporte pas l'élément audio.
-        </audio>
+      <div data-panel-manager-target="short">
+        <%= render partial: 'audio_player', locals: {
+          player_id: 'short',
+          custom_class: 'short',
+          audio_target: 'audioShort',
+          audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
+        } %>
       </div>
     <% end %>
 
+
     <% if @audio_paths[:middle].present? %>
-      <div id="audio-middle" class="audio-player d-none">
-        <audio controls data-panel-manager-target="audioMiddle">
-          <source src="<%= @audio_paths[:middle] %>" type="audio/mpeg">
-          Votre navigateur ne supporte pas l'élément audio.
-        </audio>
+      <div data-panel-manager-target="middle" class="d-none">
+        <%= render partial: 'audio_player', locals: {
+          player_id: 'middle',
+          custom_class: 'middle',
+          audio_target: 'audioMiddle',
+          audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
+        } %>
       </div>
     <% end %>
 
     <% if @audio_paths[:long].present? %>
-      <div id="audio-long" class="audio-player d-none">
-        <audio controls data-panel-manager-target="audioLong">
-          <source src="<%= @audio_paths[:long] %>" type="audio/mpeg">
-          Votre navigateur ne supporte pas l'élément audio.
-        </audio>
-      </div>
+      <div data-panel-manager-target="long" class="d-none">
+        <%= render partial: 'audio_player', locals: {
+          player_id: 'long',
+          custom_class: 'long',
+          audio_target: 'audioLong',
+          audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
+        } %>
+        </div>
     <% end %>
   </div>
-<% end  %>
 
-    <div class="d-flex justify-content-center align-items-center">
-    <button id="openModal" class="btn btn-outline-secondary d-flex" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Ancrer ce souvenir dans le temps 💌</button>
+    <div class="button-menu">
+      <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
+
+        <div>
+          <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
+          <label class="btn btn-outline-secondary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
+        </div>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
+        <label class="btn btn-outline-secondary" for="btnradio2"><i class="fa-solid fa-file"></i> Casual</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
+        <label class="btn btn-outline-secondary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-book"></i> Storytelled</label>
+      </div>
     </div>
 
-
-<div class="button-menu">
-
-<div class="button-menu">
-  <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
-    <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-outline-secondary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
-
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
-    <label class="btn btn-outline-secondary" for="btnradio2"><i class="fa-solid fa-file"></i> Casual</label>
-
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
-    <label class="btn btn-outline-secondary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-book"></i> Storytelled</label>
   </div>
-</div>
 
 </div>
 
