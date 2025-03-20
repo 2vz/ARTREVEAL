@@ -30,8 +30,8 @@ end
 # WORKART : 10
 workarts = [
     {
-      primary_artist: "Léonard de Vinci",
-      workart_title: "La Joconde",
+      primary_artist: "Leonardo da Vinci",
+      workart_title: "Mona Lisa",
       description_short: "Un portrait emblématique de la Renaissance, célèbre pour son sourire énigmatique.",
       description_middle: "Peint par Léonard de Vinci, cette œuvre est reconnue pour son sfumato et son regard captivant.",
       description_long: "La Joconde, ou Mona Lisa, est un portrait réalisé par Léonard de Vinci entre 1503 et 1519. Il s'agit d'une peinture à l'huile sur panneau de bois de peuplier, mesurant 77 × 53 cm.",

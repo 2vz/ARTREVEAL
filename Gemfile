@@ -55,7 +55,8 @@ gem "font-awesome-sass", "~> 6.1"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem 'cloudinary', '~> 2.3'
-gem "httparty"
+gem "ruby-openai"
+gem 'httparty'
 
 group :development, :test do
   gem "dotenv-rails"

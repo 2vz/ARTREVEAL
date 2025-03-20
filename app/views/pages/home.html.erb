@@ -1,2 +1,146 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-black">
+    <video id="live" autoplay playsinline muted class="w-100 h-100 object-fit-cover"></video>
+    
+    <!-- Bouton Snap-style -->
+    <button id="capture-btn" class="snap-btn position-absolute bottom-0 mb-4"></button>
+
+    <!-- Canvas caché pour stocker la capture -->
+    <canvas id="canvas" class="d-none"></canvas>
+
+    <!-- Conteneur pour la preview -->
+    <div id="preview-container" class="position-fixed top-0 start-0 w-100 h-100 d-none bg-black">
+        <img id="preview-image" class="w-100 h-100 object-fit-cover">
+        <button id="close-preview" class="position-absolute top-0 end-0 m-3 btn-close-white">✖</button>
+        <button id="send-preview" class="position-absolute bottom-0 end-0 m-3">Analyze workart</button>
+    </div>
+
+    <%= form_with url: scan_path, local: true, multipart: true, id: "photo-form", class: "d-none" do |f| %> 
+        <%= f.hidden_field :image_data, id: "image-data" %> 
+        <%= f.submit "Analyser la photo", id:'form-submit' %>
+    <% end %>
+</div>
+
+<!-- ✅ POPUP ERROR MESSAGE -->
+<% if params[:alert] %>
+  <div id="error-popup" class="popup">
+    <div class="popup-content">
+      <p>Oops... this is not a workart</p>
+      <button id="close-popup">Close</button>
+    </div>
+  </div>
+<% end %>
+
+<script>
+    (async () => {
+        try {
+            const liveVideo = document.querySelector('#live');
+            const captureBtn = document.querySelector('#capture-btn');
+            const canvas = document.querySelector('#canvas');
+            const ctx = canvas.getContext('2d');
+            const previewContainer = document.querySelector('#preview-container');
+            const previewImage = document.querySelector('#preview-image');
+            const closePreview = document.querySelector('#close-preview');
+            const sendPreview = document.querySelector('#send-preview');
+            const photoInput = document.getElementById('image-data');
+            const form = document.getElementById('photo-form');
+            const formSubmit = document.getElementById('form-submit');
+
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            liveVideo.srcObject = stream;
+
+            captureBtn.addEventListener('click', () => {
+                canvas.width = liveVideo.videoWidth;
+                canvas.height = liveVideo.videoHeight;
+                ctx.drawImage(liveVideo, 0, 0, canvas.width, canvas.height);
+
+                previewImage.src = canvas.toDataURL('image/png');
+                previewContainer.classList.remove("d-none");
+                photoInput.value = canvas.toDataURL('image/png');
+            });
+
+            closePreview.addEventListener('click', () => {
+                previewContainer.classList.add("d-none");
+            });
+
+            sendPreview.addEventListener('click', () => {
+                formSubmit.click();
+            });
+
+        } catch (error) {
+            console.error("Error accessing camera:", error);
+        }
+    })();
+
+    // ✅ Correction Définitive de la fermeture de la popup
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("OK1")
+        const popup = document.getElementById("error-popup");
+        const closeBtn = document.getElementById("close-popup");
+
+        if (popup && closeBtn) {
+            closeBtn.addEventListener("click", function() {
+                console.log("OK2")
+                popup.classList.add("d-none"); // ✅ Supprime la popup de la page
+            });
+        }
+    });
+</script>
+
+<style>
+    .snap-btn {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 5px solid rgba(255, 255, 255, 0.6);
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        outline: none;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out;
+    }
+
+    .snap-btn:active {
+        transform: translateX(-50%) scale(0.9);
+    }
+
+    .disable-dbl-tap-zoom {
+        touch-action: manipulation;
+    }
+
+    /* ✅ Styles pour la popup */
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .popup-content button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        border: none;
+        background-color: #ff5757;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .popup-content button:hover {
+        background-color: #cc4646;
+    }
+</style>
