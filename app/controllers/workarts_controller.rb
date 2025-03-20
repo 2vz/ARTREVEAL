@@ -2,6 +2,8 @@ require 'base64'
 require 'httparty'
 require 'net/http'
 require 'json'
+require "open-uri"
+require "openai"
 
 class WorkartsController < ApplicationController
   skip_before_action :authenticate_user!, raise: false
@@ -127,7 +129,7 @@ end
 
     if (result.is_artwork)
       @workart = Workart.find_or_create_by(workart_title: result.title) do |workart|
-        workart.image_url = result.image_url
+        workart.image_url = workart_picture(result.title, result.artwork_authors[0])
         workart.description_short = result.description_short
         workart.description_middle = result.description_middle
         workart.description_long = result.description_long
@@ -136,9 +138,10 @@ end
         workart.latitude = result.latitude
         workart.longitude = result.longitude
       end
+      redirect_to workart_path(@workart)
+    else
+      redirect_to root_path(alert: true)
     end
-
-    redirect_to workart_path(@workart)
   end
 
   private
@@ -237,7 +240,7 @@ Your entire response must be exactly **one valid JSON object** with no additiona
       artist_url = "https://api.artsy.net/api/artists?term=#{URI.encode_www_form_component(author)}"
       artist_uri = URI(artist_url)
       artist_request = Net::HTTP::Get.new(artist_uri)
-      artist_request["X-Xapp-Token"] = ARTSY_API_TOKEN
+      artist_request["X-Xapp-Token"] = ENV["ARTSY_API_TOKEN"]
     
       artist_response = Net::HTTP.start(artist_uri.host, artist_uri.port, use_ssl: true) { |http| http.request(artist_request) }
       artist_json = JSON.parse(artist_response.body)
@@ -251,7 +254,7 @@ Your entire response must be exactly **one valid JSON object** with no additiona
       artwork_url = "https://api.artsy.net/api/artworks?artist_id=#{artist_id}"
       artwork_uri = URI(artwork_url)
       artwork_request = Net::HTTP::Get.new(artwork_uri)
-      artwork_request["X-Xapp-Token"] = ARTSY_API_TOKEN
+      artwork_request["X-Xapp-Token"] = ENV["ARTSY_API_TOKEN"]
     
       artwork_response = Net::HTTP.start(artwork_uri.host, artwork_uri.port, use_ssl: true) { |http| http.request(artwork_request) }
       artwork_json = JSON.parse(artwork_response.body)

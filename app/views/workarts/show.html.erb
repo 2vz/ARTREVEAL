@@ -5,9 +5,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/easing/EasePack.min.js"></script>
 
 
-<div class="image-container">
-<%= image_tag @workart.image_url, class: "workart-image" %>
-</div>
+<% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+  <div class="image-container">
+    <%= image_tag @workart.image_url, class: "workart-image", alt: @workart.workart_title %>
+  </div>
+<% end %>
+
 
 <div data-controller="panel-manager" class="panel-manager">
 

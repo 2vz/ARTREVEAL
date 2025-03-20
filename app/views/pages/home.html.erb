@@ -20,6 +20,16 @@
     <% end %>
 </div>
 
+<!-- ✅ POPUP ERROR MESSAGE -->
+<% if params[:alert] %>
+  <div id="error-popup" class="popup">
+    <div class="popup-content">
+      <p>Oops... this is not a workart</p>
+      <button id="close-popup">Close</button>
+    </div>
+  </div>
+<% end %>
+
 <script>
     (async () => {
         try {
@@ -38,7 +48,7 @@
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
             liveVideo.srcObject = stream;
 
-            captureBtn.addEventListener('click', (event) => {
+            captureBtn.addEventListener('click', () => {
                 canvas.width = liveVideo.videoWidth;
                 canvas.height = liveVideo.videoHeight;
                 ctx.drawImage(liveVideo, 0, 0, canvas.width, canvas.height);
@@ -50,15 +60,30 @@
 
             closePreview.addEventListener('click', () => {
                 previewContainer.classList.add("d-none");
-                });
+            });
 
-            sendPreview.addEventListener('click', ()=> {
-                formSubmit.click()
-            })
+            sendPreview.addEventListener('click', () => {
+                formSubmit.click();
+            });
+
         } catch (error) {
             console.error("Error accessing camera:", error);
         }
     })();
+
+    // ✅ Correction Définitive de la fermeture de la popup
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("OK1")
+        const popup = document.getElementById("error-popup");
+        const closeBtn = document.getElementById("close-popup");
+
+        if (popup && closeBtn) {
+            closeBtn.addEventListener("click", function() {
+                console.log("OK2")
+                popup.classList.add("d-none"); // ✅ Supprime la popup de la page
+            });
+        }
+    });
 </script>
 
 <style>
@@ -83,5 +108,39 @@
 
     .disable-dbl-tap-zoom {
         touch-action: manipulation;
+    }
+
+    /* ✅ Styles pour la popup */
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .popup-content button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        border: none;
+        background-color: #ff5757;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .popup-content button:hover {
+        background-color: #cc4646;
     }
 </style>
