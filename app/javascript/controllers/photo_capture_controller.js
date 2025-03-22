@@ -35,6 +35,8 @@ export default class extends Controller {
   }
 
   async sendImage() {
+    const loader = document.getElementById("loading-overlay");
+    if (loader) loader.classList.remove("d-none");
     this.formSubmitTarget.click();
   }
 }

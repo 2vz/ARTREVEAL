@@ -171,17 +171,20 @@
     <span class="close">&times;</span>
     <h3>Futur moi, souviens-toi de ça !</h3>
 
-    <div class="modal-image-container">
-      <%= image_tag @workart.image_url, class: "modal-workart-image" %>
-      <div class="image-overlay">
-        <div class="overlay-content">
-          <h4 class="artwork-title"><%= @workart.workart_title %></h4>
-          <p class="artwork-artist"><%= @workart.primary_artist %></p>
-          <p class="artwork-location"><%= @workart.address %></p>
-          <p class="artwork-date"><%= Date.current.strftime("%d %B %Y") %></p>
-        </div>
+<% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+  <div class="modal-image-container">
+    <%= image_tag @workart.image_url, class: "modal-workart-image" %>
+    <div class="image-overlay">
+      <div class="overlay-content">
+        <h4 class="artwork-title"><%= @workart.workart_title %></h4>
+        <p class="artwork-artist"><%= @workart.primary_artist %></p>
+        <p class="artwork-location"><%= @workart.address %></p>
+        <p class="artwork-date"><%= Date.current.strftime("%d %B %Y") %></p>
       </div>
     </div>
+  </div>
+<% end %>
+
 
     <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
       <div class="field">
