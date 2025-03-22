@@ -175,7 +175,7 @@
 <div id="emailModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    
+
     <h3>Futur moi, <br>souviens-toi de ça !</h3>
 
   <div class="postcard-container">
@@ -194,7 +194,9 @@
       <p class="postcard-location"><%= @workart.address %></p>
       <div class="postcard-footer">
         <p class="postcard-date"><%= Date.current.strftime("%d %B %Y") %></p>
+        <% if current_user %>
         <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b></p>
+        <% end %>
       </div>
     </div>
   </div>
