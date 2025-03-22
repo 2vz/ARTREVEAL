@@ -60,7 +60,7 @@ def show
     puts "Description longue: #{@workart.description_long.present? ? 'présente' : 'absente'}"
 
     if @workart.description_short.present?
-      short_source_path = Rails.cache.fetch('audio_file_short', TextToSpeechGeneratorService.call(@workart.description_short))
+      short_source_path = Rails.cache.fetch('audio_file_short') { TextToSpeechGeneratorService.call(@workart.description_short) }
       if short_source_path.present?
         short_filename = "workart_#{@workart.id}_short_#{Time.now.to_i}.mp3"
         short_public_path = Rails.root.join('public', 'audios', short_filename)
@@ -72,7 +72,7 @@ def show
     end
 
     if @workart.description_middle.present?
-      middle_source_path = Rails.cache.fetch('audio_file_middle', TextToSpeechGeneratorService.call(@workart.description_middle))
+      middle_source_path = Rails.cache.fetch('audio_file_middle') { TextToSpeechGeneratorService.call(@workart.description_middle) }
       if middle_source_path.present?
         middle_filename = "workart_#{@workart.id}_middle_#{Time.now.to_i}.mp3"
         middle_public_path = Rails.root.join('public', 'audios', middle_filename)
@@ -84,7 +84,7 @@ def show
     end
 
     if @workart.description_long.present?
-      long_source_path = Rails.cache.fetch('audio_file_long', TextToSpeechGeneratorService.call(@workart.description_long))
+      long_source_path = Rails.cache.fetch('audio_file_long') { TextToSpeechGeneratorService.call(@workart.description_long) }
       if long_source_path.present?
         long_filename = "workart_#{@workart.id}_long_#{Time.now.to_i}.mp3"
         long_public_path = Rails.root.join('public', 'audios', long_filename)
