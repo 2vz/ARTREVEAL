@@ -13,9 +13,10 @@
 </div>
 
 <div data-controller="panel-manager">
+
   <div class="panel-manager">
 
-    <div data-panel-manager-target="panel">
+    <div data-panel-manager-target="short">
       <div class="container-below-image">
         <div class="reading-time" id="reading-time">
         <i class="fa-solid fa-book-open"></i>
@@ -48,7 +49,7 @@
       </div>
     </div>
 
-    <div data-panel-manager-target="panel" class="d-none">
+    <div data-panel-manager-target="middle" class="d-none">
       <div class="container-below-image">
         <div class="reading-time" id="reading-time">
         <i class="fa-solid fa-book-open"></i>
@@ -80,7 +81,7 @@
       </div>
     </div>
 
-    <div data-panel-manager-target="panel" class="d-none">
+    <div data-panel-manager-target="long" class="d-none">
       <div class="container-below-image">
         <div class="reading-time" id="reading-time">
         <i class="fa-solid fa-book-open"></i>
@@ -112,10 +113,9 @@
       </div>
     </div>
 
-
-    <div class="audio-players">
+  <div class="audio-players" >
       <% if @audio_paths[:short].present? %>
-        <div data-panel-manager-target="short">
+        <div data-panel-manager-target="shortContainer">
           <%= render partial: 'audio_player', locals: {
             player_id: 'short',
             custom_class: 'short',
@@ -126,7 +126,7 @@
       <% end %>
 
       <% if @audio_paths[:middle].present? %>
-        <div data-panel-manager-target="middle" class="d-none">
+        <div data-panel-manager-target="middleContainer" class="d-none">
           <%= render partial: 'audio_player', locals: {
             player_id: 'middle',
             custom_class: 'middle',
@@ -137,7 +137,7 @@
       <% end %>
 
       <% if @audio_paths[:long].present? %>
-        <div data-panel-manager-target="long" class="d-none">
+        <div data-panel-manager-target="longContainer" class="d-none" >
           <%= render partial: 'audio_player', locals: {
             player_id: 'long',
             custom_class: 'long',
@@ -147,6 +147,7 @@
           </div>
       <% end %>
     </div>
+
 
     <div class="button-menu">
       <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
@@ -165,27 +166,14 @@
     </div>
 
   </div>
+
 </div>
+
 
 <div id="emailModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
     <h3>Futur moi, <br>souviens-toi de ça !</h3>
-
-    <% if false %>
-    <div class="modal-image-container">
-      <%= image_tag @workart.image_url, class: "modal-workart-image" %>
-      <div class="image-overlay">
-        <div class="overlay-content">
-          <h4 class="artwork-title"><%= @workart.workart_title %></h4>
-          <p class="artwork-artist"><%= @workart.primary_artist %></p>
-          <p class="artwork-location"><%= @workart.address %></p>
-          <p class="artwork-date"><%= Date.current.strftime("%d %B %Y") %></p>
-        </div>
-      </div>
-    </div>
-    <% end %>
-
 
     <div class="postcard-container">
       <div class="postcard">

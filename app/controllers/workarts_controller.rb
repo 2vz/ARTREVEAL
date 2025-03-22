@@ -17,7 +17,6 @@ class WorkartsController < ApplicationController
     end
   end
 
-
 def show
   @workart = Workart.find(params[:id])
 
@@ -76,9 +75,6 @@ def show
 
 end
 
-
-
-
 def schedule_email
   recipient = params[:recipient]
   subject = params[:subject]
@@ -93,10 +89,6 @@ def schedule_email
     redirect_to @your_resource, alert: "La date doit être dans le futur"
   end
 end
-
-
-
-
 
   private
 
