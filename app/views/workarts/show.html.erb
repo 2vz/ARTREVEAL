@@ -6,7 +6,9 @@
 
 
 <div class="image-container">
-  <%= image_tag @workart.image_url, class: "workart-image" %>
+  <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+    <%= image_tag @workart.image_url, class: "workart-image" %>
+  <% end %>
   <div class="gif-overlay">
     <img id="openModal" src="<%= asset_path('post-letter.gif') %>" alt="Ouvrir la modale">
   </div>
@@ -179,6 +181,8 @@
       <div class="postcard">
         <div class="postcard-left">
           <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+            <%= image_tag @workart.image_url, class: "modal-workart-image" %>
+          <% end %>
         </div>
         <div class="postcard-right">
           <div class="header-row">
@@ -191,7 +195,9 @@
           <p class="postcard-location"><%= @workart.address %></p>
           <div class="postcard-footer">
             <p class="postcard-date"><%= Date.current.strftime("%d %B %Y") %></p>
-            <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b> </p>
+            <%if  current_user %>
+              <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b> </p>
+            <% end %>
           </div>
         </div>
       </div>
