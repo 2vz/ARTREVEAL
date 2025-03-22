@@ -66,7 +66,7 @@ def show
         short_public_path = Rails.root.join('public', 'audios', short_filename)
         FileUtils.mkdir_p(File.dirname(short_public_path))
         FileUtils.cp(short_source_path, short_public_path)
-        audio_paths[:short] = "/audios/#{short_filename}"
+        @audio_paths[:short] = "/audios/#{short_filename}"
         puts "Audio court généré: #{short_public_path}"
       end
     end
@@ -78,7 +78,7 @@ def show
         middle_public_path = Rails.root.join('public', 'audios', middle_filename)
         FileUtils.mkdir_p(File.dirname(middle_public_path))
         FileUtils.cp(middle_source_path, middle_public_path)
-        audio_paths[:middle] = "/audios/#{middle_filename}"
+        @audio_paths[:middle] = "/audios/#{middle_filename}"
         puts "Audio middle généré: #{middle_public_path}"
       end
     end
@@ -90,14 +90,14 @@ def show
         long_public_path = Rails.root.join('public', 'audios', long_filename)
         FileUtils.mkdir_p(File.dirname(long_public_path))
         FileUtils.cp(long_source_path, long_public_path)
-        audio_paths[:long] = "/audios/#{long_filename}"
+        @audio_paths[:long] = "/audios/#{long_filename}"
         puts "Audio long généré: #{long_public_path}"
       end
     end
 
-    puts "Chemins audio générés: #{audio_paths.inspect}"
+    puts "Chemins audio générés: #{@audio_paths.inspect}"
 
-    @audio_paths = audio_paths
+    @audio_paths
 
   end
 
