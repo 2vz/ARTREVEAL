@@ -122,21 +122,17 @@ def schedule_email
   end
 end
 
-  def scan
-    base64_string = params[:image_data]
-    client = OpenAI::Client.new
-    messages = [
-      {
-        "type": "text",
-        "text": prompt,
-        },
-      {
-        "type": "image_url",
-        "image_url": {
-          "url": base64_string
-        },
-      }
-    ]
+  
+def scan
+  base64_string = params[:image_data]
+  client = OpenAI::Client.new
+
+  messages = [
+    { type: "text", text: prompt },
+    { type: "image_url", image_url: { url: base64_string } }
+  ]
+
+  begin
     response = client.chat(
       parameters: {
         model: "gpt-4-turbo",
@@ -144,11 +140,12 @@ end
         temperature: 0,
       }
     )
-    content = response['choices'][0]['message']['content']
 
+    content = response['choices'][0]['message']['content']
     result = JSON.parse(content, object_class: OpenStruct)
 
-    if (result.is_artwork)
+    if result.is_artwork
+      # création / redirection
       @workart = Workart.find_or_create_by(workart_title: result.title) do |workart|
         workart.image_url = workart_picture(result.title, result.artwork_authors[0])
         workart.description_short = result.description_short
@@ -160,10 +157,17 @@ end
         workart.longitude = result.longitude
       end
       redirect_to workart_path(@workart)
+
     else
       redirect_to root_path(alert: true)
     end
+
+  rescue JSON::ParserError, OpenAI::Error => e
+    # ➕ En cas d'erreur OpenAI, rediriger avec un paramètre spécial
+    redirect_to root_path(ai_error: true)
   end
+end
+
 
   private
 
