@@ -10,7 +10,7 @@ export default class extends Controller {
 
   connect() {
     mapboxgl.accessToken = this.apiKeyValue;
-console.log('hello')
+
     if (!this.map) {
       this.map = new mapboxgl.Map({
         container: this.element,
@@ -158,12 +158,9 @@ console.log('hello')
 
     this.map.flyTo({
       center: [marker.lng, marker.lat],
-      zoom: 15,
-      speed: 1.2,
+      zoom: 12,
+      speed: 0.8,
       curve: 1,
-      easing(t) {
-        return t;
-      },
     });
   }
 }
