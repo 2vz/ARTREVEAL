@@ -15,7 +15,7 @@ class Workart < ApplicationRecord
 
   def call_text_to_speech_service(description_type)
     Rails.cache.fetch("#{cache_key_with_version}/call_text_to_speech_service") do
-      TextToSpeechGeneratorService.call(description_type)
+      TextToSpeechGeneratorService.call(send(description_type))
     end
   end
 end

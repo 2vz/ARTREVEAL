@@ -61,7 +61,7 @@ def show
 
     if @workart.description_short.present?
       puts "short description"
-      short_source_path = @workart.call_text_to_speech_service(description_short)
+      short_source_path = @workart.call_text_to_speech_service('description_short')
       if short_source_path.present?
         short_filename = "workart_#{@workart.id}_short_#{Time.now.to_i}.mp3"
         short_public_path = Rails.root.join('public', 'audios', short_filename)
@@ -74,7 +74,7 @@ def show
 
     if @workart.description_middle.present?
       puts "middle description"
-      middle_source_path = @workart.call_text_to_speech_service(description_middle)
+      middle_source_path = @workart.call_text_to_speech_service('description_middle')
       if middle_source_path.present?
         middle_filename = "workart_#{@workart.id}_middle_#{Time.now.to_i}.mp3"
         middle_public_path = Rails.root.join('public', 'audios', middle_filename)
@@ -87,7 +87,7 @@ def show
 
     if @workart.description_long.present?
       puts "long description"
-      long_source_path = @workart.call_text_to_speech_service(description_long)
+      long_source_path = @workart.call_text_to_speech_service('description_long')
       if long_source_path.present?
         long_filename = "workart_#{@workart.id}_long_#{Time.now.to_i}.mp3"
         long_public_path = Rails.root.join('public', 'audios', long_filename)
