@@ -7,7 +7,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :pages
+
+  get "error", to: "pages#error"
+
+
   resources :workarts, only: [:index, :show] do
      member do
       post :schedule_email
@@ -20,6 +23,7 @@ Rails.application.routes.draw do
 
   resources :user_workarts, only: [:destroy]
   post "tts", to: "pages#tts", as: :tts
+
   # Defines the root path route ("/")
   # root "posts#index"
 end

@@ -175,27 +175,25 @@
     <span class="close">&times;</span>
     <h3>Futur moi, <br>souviens-toi de ça !</h3>
 
-    <div class="postcard-container">
-      <div class="postcard">
-        <div class="postcard-left">
-          <%= image_tag @workart.image_url, class: "postcard-image" %>
-        </div>
-        <div class="postcard-right">
-          <div class="header-row">
-            <h3 class="postcard-title"><%= @workart.workart_title %></h3>
-            <div class="stamp">
-              <%= image_tag "stamp.png", class: "stamp-image" %>
-            </div>
-          </div>
-          <p class="postcard-artist"><%= @workart.primary_artist %></p>
-          <p class="postcard-location"><%= @workart.address %></p>
-          <div class="postcard-footer">
-            <p class="postcard-date"><%= Date.current.strftime("%d %B %Y") %></p>
-            <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b> </p>
-          </div>
-        </div>
+  <div class="postcard-container">
+  <div class="postcard">
+    <div class="postcard-left">
+      <%= image_tag @workart.image_url, class: "postcard-image" %>
+      <div class="stamp">
+        <%= image_tag "stamp.png", class: "stamp-image" %>
       </div>
     </div>
+    <div class="postcard-right">
+      <h3 class="postcard-title"><%= @workart.workart_title %></h3>
+      <p class="postcard-artist">par <%= @workart.primary_artist %></p>
+      <p class="postcard-location"><%= @workart.address %></p>
+      <div class="postcard-footer">
+        <p class="postcard-date"><%= Date.current.strftime("%d %B %Y") %></p>
+        <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b></p>
+      </div>
+    </div>
+  </div>
+</div>
 
     <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
       <div class="field">
