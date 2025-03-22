@@ -66,24 +66,24 @@ console.log('hello')
   #showPopup(marker, index, markers) {
     const popupContainer = document.getElementById("map-popup-container");
     popupContainer.innerHTML = `
-      <div class="popup-navigation">
-        <button id="prev-workart" class="nav-button"><</button>
-        <div class="popup-content">
-          <div class="mapbox-image-container">
-            ${
-              marker.imageUrl
-                ? `<img src="${marker.imageUrl}" class="popup-image" data-workart-id="${marker.idworkart}" />`
-                : ""
-            }
-          </div>
-          <div class="mapbox-text-container">
-            <h3>${marker.title}</h3>
-            <p>${marker.address}</p>
-          </div>
-        </div>
-        <button id="next-workart" class="nav-button">></button>
+  <div class="popup-navigation">
+    <button id="prev-workart" class="nav-button"><</button>
+    <div class="popup-content">
+      <div class="mapbox-image-container">
+        ${
+          marker.imageUrl
+            ? `<img src="${marker.imageUrl}" class="popup-image" data-workart-id="${marker.idworkart}" />`
+            : ""
+        }
       </div>
-    `;
+      <div class="mapbox-text-container">
+        <h3>${marker.title}</h3>
+        <p>${marker.address}</p>
+      </div>
+    </div>
+    <button id="next-workart" class="nav-button">></button>
+  </div>
+`;
 
     popupContainer.style.display = "block";
 
