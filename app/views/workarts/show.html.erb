@@ -6,7 +6,9 @@
 
 
 <div class="image-container">
-  <%= image_tag @workart.image_url, class: "workart-image" %>
+  <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+    <%= image_tag @workart.image_url, class: "workart-image" %>
+  <% end %>
   <div class="gif-overlay">
     <img id="openModal" src="<%= asset_path('post-letter.gif') %>" alt="Ouvrir la modale">
   </div>
@@ -173,12 +175,15 @@
 <div id="emailModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
+    
     <h3>Futur moi, <br>souviens-toi de ça !</h3>
 
   <div class="postcard-container">
   <div class="postcard">
     <div class="postcard-left">
-      <%= image_tag @workart.image_url, class: "postcard-image" %>
+                <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+            <%= image_tag @workart.image_url, class: "postcard-image" %>
+          <% end %>
       <div class="stamp">
         <%= image_tag "stamp.png", class: "stamp-image" %>
       </div>
@@ -194,6 +199,7 @@
     </div>
   </div>
 </div>
+
 
     <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
       <div class="field">
