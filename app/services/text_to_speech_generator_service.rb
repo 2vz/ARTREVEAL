@@ -10,7 +10,7 @@ class TextToSpeechGeneratorService
   private_constant :API_KEY
   attr_reader :text, :voice_id, :model_id
 
-  def initialize(text, voice_id = '9BWtsMINqrJLrRacOk9x', model_id = 'eleven_multilingual_v2')
+  def initialize(text, voice_id = 'N2lVS1w4EtoT3dr4eOWO', model_id = 'eleven_multilingual_v2')
     @text = text
     @voice_id = voice_id
     @model_id = model_id
