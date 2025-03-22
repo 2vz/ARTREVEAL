@@ -11,19 +11,40 @@ class WorkartsController < ApplicationController
   before_action :set_user_workart, only: :show
   # GET /workarts or /workarts.json
   def index
+    # Récupère toutes les œuvres
     @workarts = Workart.all
-    # The `geocoded` scope filters only workarts with coordinates
+
+    # Œuvres likées par l'utilisateur actuel (pour la carte)
     @markers = @workarts.select { |workart| current_user.likes?(workart) }.map do |workart|
       {
         imageUrl: workart.image_url,
-        name: workart.workart_title,
+        title: workart.workart_title,
         address: workart.address,
         lat: workart.latitude,
         lng: workart.longitude,
-
+        idworkart: workart.id
       }
     end
+
+    # Récupère toutes les œuvres avec leur nombre total de likes pour la liste
+    @workarts_with_likes = Workart
+    .left_joins(:user_workarts) # On inclut toutes les œuvres, même celles sans likes
+    .select('workarts.id, workarts.image_url, workarts.workart_title, COUNT(user_workarts.id) AS likes_count')
+    .group('workarts.id') # Regroupe les résultats par l'ID de l'œuvre
+
+  # Crée un tableau avec les œuvres et leur nombre total de likes
+  @workarts_with_likes = @workarts_with_likes.map do |workart|
+    {
+      id: workart.id,
+      image_url: workart.image_url,
+      workart_title: workart.workart_title,
+      likes_count: workart.likes_count, # Si aucune like n'est trouvé, on met 0
+      show_url: workart_path(workart)
+    }
+end
   end
+
+
 
   # GET /workarts/1 or /workarts/1.json
 # app/controllers/workarts_controller.rb
