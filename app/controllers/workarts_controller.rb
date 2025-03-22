@@ -60,7 +60,7 @@ def show
     puts "Description longue: #{@workart.description_long.present? ? 'présente' : 'absente'}"
 
     if @workart.description_short.present?
-      short_source_path = TextToSpeechGeneratorService.call(@workart.description_short)
+      short_source_path = Rails.cache.fetch('audio_file_short', TextToSpeechGeneratorService.call(@workart.description_short))
       if short_source_path.present?
         short_filename = "workart_#{@workart.id}_short_#{Time.now.to_i}.mp3"
         short_public_path = Rails.root.join('public', 'audios', short_filename)
@@ -72,7 +72,7 @@ def show
     end
 
     if @workart.description_middle.present?
-      middle_source_path = TextToSpeechGeneratorService.call(@workart.description_middle)
+      middle_source_path = Rails.cache.fetch('audio_file_middle', TextToSpeechGeneratorService.call(@workart.description_middle))
       if middle_source_path.present?
         middle_filename = "workart_#{@workart.id}_middle_#{Time.now.to_i}.mp3"
         middle_public_path = Rails.root.join('public', 'audios', middle_filename)
@@ -84,7 +84,7 @@ def show
     end
 
     if @workart.description_long.present?
-      long_source_path = TextToSpeechGeneratorService.call(@workart.description_long)
+      long_source_path = Rails.cache.fetch('audio_file_long', TextToSpeechGeneratorService.call(@workart.description_long))
       if long_source_path.present?
         long_filename = "workart_#{@workart.id}_long_#{Time.now.to_i}.mp3"
         long_public_path = Rails.root.join('public', 'audios', long_filename)
@@ -138,7 +138,7 @@ def scan
 
     content = response['choices'][0]['message']['content']
     result = JSON.parse(content, object_class: OpenStruct)
-    
+
     # si ce n'est pas une œuvre d'art, inutile de valider le reste
     if result.is_artwork == false
       return redirect_to root_path(alert: true)
@@ -148,7 +148,7 @@ def scan
     unless valid_openai_result?(result)
       return redirect_to root_path(ai_error: true)
     end
-      
+
     if result.is_artwork
       # création / redirection
       @workart = Workart.find_or_create_by(workart_title: result.title) do |workart|
@@ -192,44 +192,44 @@ end
 
         Your JSON object must include exactly the following keys:
 
-        - **"is_artwork"**: boolean  
+        - **"is_artwork"**: boolean
           → `true` if the image depicts an artwork (painting, sculpture, monument, etc.), `false` otherwise.
 
-        - **"title"**: string or null  
+        - **"title"**: string or null
           → The official English name of the artwork, or `null` if not found.
 
-        - **"artwork_authors"**: array of strings  
+        - **"artwork_authors"**: array of strings
           → A list of artist names in the format `"First name Last name"`. If unknown, return an empty array.
 
-        - **"description_short"**: string  
-          → A concise historical and artistic description (350-500 characters). Include the artist’s name, creation period, and notable artistic techniques or themes.  
+        - **"description_short"**: string
+          → A concise historical and artistic description (350-500 characters). Include the artist’s name, creation period, and notable artistic techniques or themes.
           **Ensure the text is visually well-structured and easy to read.**
 
-        - **"description_middle"**: string  
-          → A casual yet informative description emphasizing the artwork’s significance, techniques, and impact (550-775 characters).  
+        - **"description_middle"**: string
+          → A casual yet informative description emphasizing the artwork’s significance, techniques, and impact (550-775 characters).
           **Ensure the text is visually well-structured for readability.**
 
-        - **"description_long"**: string  
-          → A storytelling-style description that immerses the reader in the historical and artistic context (900-1000 characters).  
+        - **"description_long"**: string
+          → A storytelling-style description that immerses the reader in the historical and artistic context (900-1000 characters).
           **Ensure a visually structured text to make it easy to read.**
 
-        - **"address"**: string or null  
+        - **"address"**: string or null
           → The official exhibition location of the artwork (museum, city, country). If unknown, return `null`.
 
-        - **"latitude"**: number or null  
+        - **"latitude"**: number or null
           → The geographic latitude of the exhibition location. If unknown, return `null`.
 
-        - **"longitude"**: number or null  
+        - **"longitude"**: number or null
           → The geographic longitude of the exhibition location. If unknown, return `null`.
 
-        **Strict Instructions for "image_url":**  
-        1. **The image must come only from official and reliable sources** such as:  
-          - **Wikimedia Commons** (https://commons.wikimedia.org)  
-          - **Artsy** (https://www.artsy.net)  
-          - **Official museum websites** (e.g., Louvre, MoMA, MET, Rijksmuseum, etc.)  
-        2. **Before returning the URL, verify that it is active and directly accessible as an image (.jpg or .png).**  
-        3. **The URL must point directly to an image file, not to a webpage.** Avoid links that require redirection, login, or API requests.  
-        4. **If no valid image URL is found from the trusted sources, return `null`.**  
+        **Strict Instructions for "image_url":**
+        1. **The image must come only from official and reliable sources** such as:
+          - **Wikimedia Commons** (https://commons.wikimedia.org)
+          - **Artsy** (https://www.artsy.net)
+          - **Official museum websites** (e.g., Louvre, MoMA, MET, Rijksmuseum, etc.)
+        2. **Before returning the URL, verify that it is active and directly accessible as an image (.jpg or .png).**
+        3. **The URL must point directly to an image file, not to a webpage.** Avoid links that require redirection, login, or API requests.
+        4. **If no valid image URL is found from the trusted sources, return `null`.**
 
         ---
 
@@ -310,12 +310,12 @@ end
       is_artwork title artwork_authors description_short
       description_middle description_long address latitude longitude
     ]
-  
+
     result_hash = result.to_h
-  
+
     # Vérifie que toutes les clés sont présentes
     return false unless required_keys.all? { |key| result_hash.key?(key) }
-  
+
     # Vérifie les types
     result.is_artwork.in?([true, false]) &&
       result.title.is_a?(String) &&
