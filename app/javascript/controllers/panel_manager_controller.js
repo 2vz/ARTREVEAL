@@ -1,84 +1,82 @@
 import { Controller } from "@hotwired/stimulus";
 
-// Connects to data-controller="panel-manager"
 export default class extends Controller {
-  static targets = [
-    "panel",
-    "button",
-    "audioShort",
-    "audioMiddle",
-    "audioLong",
-  ];
+  static targets = ["audioShort", "short", "shortContainer","middleContainer","longContainer", "audioMiddle", "middle", "audioLong", "long", "playIcon", "pauseIcon", "progress", "progressContainer", "timeDisplay"]
+
+  connect() {
+  }
 
   showShort(event) {
-    // Gestion originale des panels
-    this.panelTargets.forEach((panel) => {
-      panel.classList.add("d-none");
-    });
-    this.panelTargets[0].classList.remove("d-none");
-    this.buttonTargets.forEach((button) => {
-      button.classList.remove("active");
-    });
-    event.currentTarget.classList.add("active");
-
-    // Gestion des lecteurs audio
-    this.hideAllAudio();
-    if (this.hasAudioShortTarget) {
-      this.audioShortTarget.closest(".audio-player").classList.remove("d-none");
-    }
+    this.shortTarget.classList.remove("d-none")
+    this.middleTarget.classList.add("d-none")
+    this.longTarget.classList.add("d-none")
+    this.shortContainerTarget.classList.remove("d-none")
+    this.middleContainerTarget.classList.add("d-none")
+    this.longContainerTarget.classList.add("d-none")
+    event.currentTarget.classList.add("active")
   }
 
   showMiddle(event) {
-    // Gestion originale des panels
-    this.panelTargets.forEach((panel) => {
-      panel.classList.add("d-none");
-    });
-    this.panelTargets[1].classList.remove("d-none");
-    this.buttonTargets.forEach((button) => {
-      button.classList.remove("active");
-    });
-    event.currentTarget.classList.add("active");
-
-    // Gestion des lecteurs audio
-    this.hideAllAudio();
-    if (this.hasAudioMiddleTarget) {
-      this.audioMiddleTarget
-        .closest(".audio-player")
-        .classList.remove("d-none");
-    }
+    this.shortTarget.classList.add("d-none")
+    this.middleTarget.classList.remove("d-none")
+    this.longTarget.classList.add("d-none")
+    this.shortContainerTarget.classList.add("d-none")
+    this.middleContainerTarget.classList.remove("d-none")
+    this.shortContainerTarget.classList.add("d-none")
+    this.longContainerTarget.classList.add("d-none")
+    event.currentTarget.classList.add("active")
   }
 
   showLong(event) {
-    // Gestion originale des panels
-    this.panelTargets.forEach((panel) => {
-      panel.classList.add("d-none");
-    });
-    this.panelTargets[2].classList.remove("d-none");
-    this.buttonTargets.forEach((button) => {
-      button.classList.remove("active");
-    });
-    event.currentTarget.classList.add("active");
-
-    // Gestion des lecteurs audio
-    this.hideAllAudio();
-    if (this.hasAudioLongTarget) {
-      this.audioLongTarget.closest(".audio-player").classList.remove("d-none");
-    }
+    this.shortTarget.classList.add("d-none")
+    this.middleTarget.classList.add("d-none")
+    this.longTarget.classList.remove("d-none")
+    this.shortContainerTarget.classList.add("d-none")
+    this.longContainerTarget.classList.remove("d-none")
+    this.shortContainerTarget.classList.add("d-none")
+    this.middleContainerTarget.classList.add("d-none")
+    event.currentTarget.classList.add("active")
   }
 
-  hideAllAudio() {
-    // Masquer tous les lecteurs audio
-    if (this.hasAudioShortTarget) {
-      this.audioShortTarget.pause();
-      this.audioShortTarget.closest(".audio-player").classList.add("d-none");
-    }
-    if (this.hasAudioMiddleTarget) {
-      this.audioMiddleTarget.pause();
-      this.audioMiddleTarget.closest(".audio-player").classList.add("d-none");
-    }
-    if (this.hasAudioLongTarget) {
-      this.audioLongTarget.pause();
-      this.audioLongTarget.closest(".audio-player").classList.add("d-none");
-    }
+  playshort() {
+    this.audioShortTarget.play()
+    this.playDisplay()
   }
+
+  playmiddle() {
+    this.audioMiddleTarget.play()
+    this.playDisplay()
+  }
+
+  playlong() {
+    this.audioLongTarget.play()
+    this.playDisplay()
+  }
+
+  playDisplay() {
+    this.playIconTargets.forEach(icon => icon.style.display = 'none')
+    this.pauseIconTargets.forEach(icon => icon.style.display = 'block')
+  }
+
+  pauseDisplay() {
+    this.playIconTargets.forEach(icon => icon.style.display = 'block')
+    this.pauseIconTargets.forEach(icon => icon.style.display = 'none')
+  }
+
+  pauseshort() {
+    this.audioShortTarget.pause()
+    this.pauseDisplay()
+  }
+
+  pausemiddle() {
+    this.audioMiddleTarget.pause()
+    this.pauseDisplay()
+
+  }
+
+  pauselong() {
+    this.audioLongTarget.pause()
+    this.pauseDisplay()
+  }
+
 }

@@ -1,0 +1,11 @@
+<div id="audio-<%= player_id %>" class="modern-audio-player <%= custom_class %>">
+
+    <button class="play-button">
+      <i class="play-icon" data-panel-manager-target="playIcon" data-action="click->panel-manager#play<%= player_id %>">▶</i>
+      <i class="pause-icon" style="display:none;" data-panel-manager-target="pauseIcon" data-action="click->panel-manager#pause<%= player_id %>">⏸</i>
+    </button>
+
+  <audio data-panel-manager-target="<%= audio_target %>" data-panel-manager-target="audio">
+    <source src="<%= audio_source %>" type="audio/mpeg">
+  </audio>
+</div>
