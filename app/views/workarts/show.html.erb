@@ -21,11 +21,13 @@
         <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
       </div>
       <div class="icon-like-container">
-        <div class="icon-map">
-          <%= link_to workarts_path do %>
-            <i class="fa-solid fa-map-location-dot"></i>
-          <% end %>
-        </div>
+          <div class="icon-map">
+  <%= link_to workarts_path(workart_id: @workart.id) do %>
+    <i class="fa-solid fa-map-location-dot"></i>
+  <% end %>
+</div>
+
+
         <div class= "like-button">
           <% if @user_workart %>
             <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
