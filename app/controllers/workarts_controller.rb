@@ -1,10 +1,10 @@
 class WorkartsController < ApplicationController
   before_action :set_workart, only: :show
   before_action :set_user_workart, only: :show
-  # GET /workarts or /workarts.json
+
   def index
     @workarts = Workart.all
-    # The `geocoded` scope filters only workarts with coordinates
+
     @markers = @workarts.select { |workart| current_user.likes?(workart) }.map do |workart|
       {
         imageUrl: workart.image_url,

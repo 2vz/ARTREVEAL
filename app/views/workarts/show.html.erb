@@ -6,7 +6,10 @@
 
 
 <div class="image-container">
-<%= image_tag @workart.image_url, class: "workart-image" %>
+  <%= image_tag @workart.image_url, class: "workart-image" %>
+  <div class="gif-overlay">
+    <img id="openModal" src="<%= asset_path('post-letter.gif') %>" alt="Ouvrir la modale">
+  </div>
 </div>
 
 <div data-controller="panel-manager">
@@ -38,13 +41,6 @@
 
         </div>
       </div>
-
-
-<div class="d-flex justify-content-center align-items-center">
-  <button id="openModal" class="btn btn-outline-secondary d-flex" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Ancrer ce souvenir dans le temps 💌</button>
-</div>
-
-
 
       <div class="workart-details">
         <h1 class="title"><%= @workart.workart_title %></h1>
@@ -117,41 +113,40 @@
     </div>
 
 
-  <div class="audio-players">
-    <% if @audio_paths[:short].present? %>
-      <div data-panel-manager-target="short">
-        <%= render partial: 'audio_player', locals: {
-          player_id: 'short',
-          custom_class: 'short',
-          audio_target: 'audioShort',
-          audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
-        } %>
-      </div>
-    <% end %>
-
-
-    <% if @audio_paths[:middle].present? %>
-      <div data-panel-manager-target="middle" class="d-none">
-        <%= render partial: 'audio_player', locals: {
-          player_id: 'middle',
-          custom_class: 'middle',
-          audio_target: 'audioMiddle',
-          audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
-        } %>
-      </div>
-    <% end %>
-
-    <% if @audio_paths[:long].present? %>
-      <div data-panel-manager-target="long" class="d-none">
-        <%= render partial: 'audio_player', locals: {
-          player_id: 'long',
-          custom_class: 'long',
-          audio_target: 'audioLong',
-          audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
-        } %>
+    <div class="audio-players">
+      <% if @audio_paths[:short].present? %>
+        <div data-panel-manager-target="short">
+          <%= render partial: 'audio_player', locals: {
+            player_id: 'short',
+            custom_class: 'short',
+            audio_target: 'audioShort',
+            audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
+          } %>
         </div>
-    <% end %>
-  </div>
+      <% end %>
+
+      <% if @audio_paths[:middle].present? %>
+        <div data-panel-manager-target="middle" class="d-none">
+          <%= render partial: 'audio_player', locals: {
+            player_id: 'middle',
+            custom_class: 'middle',
+            audio_target: 'audioMiddle',
+            audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
+          } %>
+        </div>
+      <% end %>
+
+      <% if @audio_paths[:long].present? %>
+        <div data-panel-manager-target="long" class="d-none">
+          <%= render partial: 'audio_player', locals: {
+            player_id: 'long',
+            custom_class: 'long',
+            audio_target: 'audioLong',
+            audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
+          } %>
+          </div>
+      <% end %>
+    </div>
 
     <div class="button-menu">
       <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
@@ -170,14 +165,14 @@
     </div>
 
   </div>
-
 </div>
 
 <div id="emailModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <h3>Futur moi, souviens-toi de ça !</h3>
+    <h3>Futur moi, <br>souviens-toi de ça !</h3>
 
+    <% if false %>
     <div class="modal-image-container">
       <%= image_tag @workart.image_url, class: "modal-workart-image" %>
       <div class="image-overlay">
@@ -186,6 +181,30 @@
           <p class="artwork-artist"><%= @workart.primary_artist %></p>
           <p class="artwork-location"><%= @workart.address %></p>
           <p class="artwork-date"><%= Date.current.strftime("%d %B %Y") %></p>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+
+    <div class="postcard-container">
+      <div class="postcard">
+        <div class="postcard-left">
+          <%= image_tag @workart.image_url, class: "postcard-image" %>
+        </div>
+        <div class="postcard-right">
+          <div class="header-row">
+            <h3 class="postcard-title"><%= @workart.workart_title %></h3>
+            <div class="stamp">
+              <%= image_tag "stamp.png", class: "stamp-image" %>
+            </div>
+          </div>
+          <p class="postcard-artist"><%= @workart.primary_artist %></p>
+          <p class="postcard-location"><%= @workart.address %></p>
+          <div class="postcard-footer">
+            <p class="postcard-date"><%= Date.current.strftime("%d %B %Y") %></p>
+            <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b> </p>
+          </div>
         </div>
       </div>
     </div>
@@ -231,25 +250,78 @@
 
 
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("emailModal");
+    const openBtn = document.getElementById("openModal");
+    const closeBtn = document.querySelector(".close");
+    const emailForm = document.querySelector("#emailModal form");
 
-document.addEventListener("DOMContentLoaded", function () {
-  const modal = document.getElementById("emailModal");
-  const openBtn = document.getElementById("openModal");
-  const closeBtn = document.querySelector(".close");
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "block";
+    });
 
-  openBtn.addEventListener("click", () => {
-    modal.style.display = "block";
-  });
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", (event) => {
-    if (event.target === modal) {
+    closeBtn.addEventListener("click", () => {
       modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+
+    emailForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const formData = new FormData(emailForm);
+
+
+      fetch(emailForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'same-origin'
+      })
+      .then(response => {
+
+        showConfirmationMessage();
+      })
+      .catch(error => {
+
+        console.log("Erreur d'envoi:", error);
+        showConfirmationMessage();
+      });
+    });
+
+
+    function showConfirmationMessage() {
+
+      const formContent = emailForm.parentElement;
+
+
+      const confirmationDiv = document.createElement("div");
+      confirmationDiv.className = "email-confirmation";
+      confirmationDiv.innerHTML = `
+        <div class="confirmation-icon">✓</div>
+        <h3>Mail programmé !</h3>
+        <p>Votre message vous sera envoyé à la date choisie.</p>
+        <button id="back-to-workart" class="btn-back">Retour à l'œuvre</button>
+      `;
+
+      formContent.innerHTML = '';
+      formContent.appendChild(confirmationDiv);
+
+      document.getElementById("back-to-workart").addEventListener("click", function() {
+        modal.style.display = "none";
+
+        setTimeout(() => {
+          location.reload();
+        }, 100);
+      });
     }
   });
-});
 
 </script>

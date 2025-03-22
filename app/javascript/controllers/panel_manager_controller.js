@@ -1,10 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
-
 export default class extends Controller {
-  static targets = ["panel", "button", "audioShort", "audioMiddle", "audioLong","audio", "playIcon", "pauseIcon", "progress", "progressContainer", "timeDisplay","short","middle","long"]
+  static targets = ["panel", "button", "audioShort", "audioMiddle", "audioLong", "audio", "playIcon", "pauseIcon", "progress", "progressContainer", "timeDisplay", "short", "middle", "long"]
 
   connect() {
+    console.log('shortTarget', this.panelTarget)
     if (!this.hasAudioTarget) return;
 
     if (this.audioTarget.readyState >= 1) {
@@ -13,13 +13,13 @@ export default class extends Controller {
       this.audioTarget.addEventListener('loadedmetadata', () => this.updateTimeDisplay());
     }
 
-    this.audioTarget.addEventListener('timeupdate', () => this.updateProgress());
+
+    this.audioTarget.addEventListener('progress', () => this.updateProgress());
     this.audioTarget.addEventListener('ended', () => this.handleEnded());
     this.progressContainerTarget.addEventListener('click', (e) => this.setProgress(e));
   }
 
   showShort(event) {
-    console.log("short")
     this.shortTarget.classList.remove("d-none")
     this.middleTarget.classList.add("d-none")
     this.longTarget.classList.add("d-none")
@@ -27,7 +27,6 @@ export default class extends Controller {
   }
 
   showMiddle(event) {
-    console.log("middle")
     this.shortTarget.classList.add("d-none")
     this.middleTarget.classList.remove("d-none")
     this.longTarget.classList.add("d-none")
@@ -35,24 +34,10 @@ export default class extends Controller {
   }
 
   showLong(event) {
-    console.log("long")
     this.shortTarget.classList.add("d-none")
     this.middleTarget.classList.add("d-none")
     this.longTarget.classList.remove("d-none")
     event.currentTarget.classList.add("active")
-  }
-
-  hideAllAudio() {
-
-    if (this.hasAudioShortTarget) {
-      this.audioShortTarget.pause()
-    }
-    if (this.hasAudioMiddleTarget) {
-      this.audioMiddleTarget.pause()
-    }
-    if (this.hasAudioLongTarget) {
-      this.audioLongTarget.pause()
-    }
   }
 
   updateTimeDisplay() {
@@ -81,42 +66,44 @@ export default class extends Controller {
   }
 
   playshort() {
-      this.audioShortTarget.play()
-      this.playIconTarget.style.display = 'none';
-      this.pauseIconTarget.style.display = 'block';
+    this.audioShortTarget.play()
+    this.playDisplay()
   }
 
   playmiddle() {
-      this.audioMiddleTarget.play()
-      this.playIconTarget.style.display = 'none';
-      this.pauseIconTarget.style.display = 'block';
+    this.audioMiddleTarget.play()
+    this.playDisplay()
   }
 
   playlong() {
-      this.audioLongTarget.play()
-      this.playIconTarget.style.display = 'none';
-      this.pauseIconTarget.style.display = 'block';
+    this.audioLongTarget.play()
+    this.playDisplay()
   }
 
- pauseshort() {
-  console.log("pause short")
-      this.audioShortTarget.pause()
-      this.playIconTarget.style.display = 'block';
-      this.pauseIconTarget.style.display = 'none';
+  playDisplay() {
+    this.playIconTargets.forEach(icon => icon.style.display = 'none')
+    this.pauseIconTargets.forEach(icon => icon.style.display = 'block')
+  }
+
+  pauseDisplay() {
+    this.playIconTargets.forEach(icon => icon.style.display = 'block')
+    this.pauseIconTargets.forEach(icon => icon.style.display = 'none')
+  }
+
+  pauseshort() {
+    this.audioShortTarget.pause()
+    this.pauseDisplay()
   }
 
   pausemiddle() {
-    console.log("pause middle")
-      this.audioMiddleTarget.pause()
-      this.playIconTarget.style.display = 'block';
-      this.pauseIconTarget.style.display = 'none';
+    this.audioMiddleTarget.pause()
+    this.pauseDisplay()
+
   }
 
   pauselong() {
-    console.log("pause long")
-      this.audioLongTarget.pause()
-      this.playIconTarget.style.display = 'block';
-      this.pauseIconTarget.style.display = 'none';
+    this.audioLongTarget.pause()
+    this.pauseDisplay()
   }
 
   handleEnded() {

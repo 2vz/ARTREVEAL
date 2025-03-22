@@ -1,13 +1,10 @@
 
-  .modern-audio-player {
-    max-width: 500px;
-    margin: 20px auto;
-    background: #ffffff;
-    border-radius: 50px;
-    padding: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  .audio-players {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
 
   .player-wrapper {
     display: flex;
