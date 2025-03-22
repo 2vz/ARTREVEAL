@@ -1,2 +1,58 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-black">
+    <div data-controller="camera-stream" class="w-100 h-100">
+        <video data-camera-stream-target="liveVideo" data-live-video autoplay playsinline muted class="w-100 h-100 object-fit-cover"></video>
+        <div data-camera-stream-target="errorPage"
+            class="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white text-black text-center d-none"
+            style="z-index: 2000;">
+        <p class="mb-4 fs-4">Oops, on a besoin d'accéder à la caméra pour vous aider 📸</p>
+        <button data-action="camera-stream#retry" class="btn btn-dark">Redemander l'accès</button>
+        </div>
+    </div>
+
+    <div data-controller="photo-capture">
+        <button data-photo-capture-target="captureBtn" data-action="click->photo-capture#capture" class="snap-btn position-absolute bottom-0 mb-4"></button>
+        <canvas data-photo-capture-target="canvas" class="d-none"></canvas>
+        
+        <div data-photo-capture-target="previewContainer" class="position-fixed top-0 start-0 w-100 h-100 d-none bg-black">
+            <img data-photo-capture-target="previewImage" class="w-100 h-100 object-fit-cover">
+            <button data-photo-capture-target="closePreview" data-action="click->photo-capture#delete" class="position-absolute top-0 end-0 m-3 btn-close-white">✖</button>
+            <button data-photo-capture-target="sendPreview" data-action="click->photo-capture#sendImage" class="position-absolute bottom-0 end-0 m-3">Analyze workart</button>
+        </div>
+        
+        <%= form_with url: scan_path, local: true, multipart: true, class: "d-none" do |f| %> 
+            <%= f.hidden_field :image_data, data: { photo_capture_target: "photoInput" } %> 
+            <%= f.submit "Analyser la photo", data: { photo_capture_target: "formSubmit" } %>
+        <% end %>
+    </div>
+</div>
+
+<% if params[:alert] %>
+  <div data-controller="error-popup" data-error-popup-target="errorPopup" class="popup">
+    <div class="popup-content">
+      <p>Oops... this is not a workart</p>
+      <button data-action="error-popup#close">Close</button>
+    </div>
+  </div>
+
+  <div class="overlay-blocker" id="click-blocker" data-error-overlay-blocker></div>
+<% end %>
+
+<% if params[:ai_error] %>
+  <div data-controller="ai-error-popup">
+  <!-- 🔲 Overlay réutilisé -->
+  <div class="overlay-blocker d-none"
+       id="click-blocker"
+       data-ai-error-popup-target="overlay"></div>
+
+  <!-- 🧠 Popup IA -->
+  <div data-ai-error-popup-target="popup"
+       class="popup d-none" id="ai-error-popup">
+    <div class="popup-content">
+      <p>Oups, notre IA a un peu de mal... 😓<br>Tu peux reprendre la photo ?</p>
+      <button data-action="ai-error-popup#close">Reprendre</button>
+    </div>
+  </div>
+</div>
+
+
+<% end %>

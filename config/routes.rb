@@ -9,17 +9,17 @@ Rails.application.routes.draw do
 
   resources :pages
   resources :workarts, only: [:index, :show] do
+     member do
+      post :schedule_email
+     end
     resources :user_workarts, only: [:create]
+
   end
+
+  post :scan, to: 'workarts#scan'
 
   resources :user_workarts, only: [:destroy]
   post "tts", to: "pages#tts", as: :tts
   # Defines the root path route ("/")
   # root "posts#index"
-
-  resources :workarts do
-    member do
-      post :schedule_email
-    end
-  end
 end

@@ -1,19 +1,9 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["audioShort", "short", "shortContainer","middleContainer","longContainer", "audioMiddle", "middle", "audioLong", "long", "playIcon", "pauseIcon", "progress", "progressContainer", "timeDisplay"]
 
   connect() {
-    console.log(this.audioShortTarget, this.audioMiddleTarget, this.audioLongTarget)
-    // if (this.audioTarget.readyState >= 1) {
-    //   this.updateTimeDisplay();
-    // } else {
-    //   this.audioTarget.addEventListener('loadedmetadata', () => this.updateTimeDisplay());
-    // }
-
-    // this.audioTarget.addEventListener('progress', () => this.updateProgress());
-    // this.audioTarget.addEventListener('ended', () => this.handleEnded());
-    // this.progressContainerTarget.addEventListener('click', (e) => this.setProgress(e));
   }
 
   showShort(event) {
@@ -49,19 +39,16 @@ export default class extends Controller {
   }
 
   playshort() {
-    console.log('short', this.audioShortTarget)
     this.audioShortTarget.play()
     this.playDisplay()
   }
 
   playmiddle() {
-    console.log('middle', this.audioMiddleTarget)
     this.audioMiddleTarget.play()
     this.playDisplay()
   }
 
   playlong() {
-    console.log('long', this.audioLongTarget)
     this.audioLongTarget.play()
     this.playDisplay()
   }
