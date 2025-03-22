@@ -66,45 +66,34 @@
 
 
 <!-- Conteneur pour l'image -->
-<style>/* Conteneur global pour le contenu du pop-up */
-.mapboxgl-popup-content {
-  display: flex; /* Utilisation de flexbox pour aligner l'image à gauche et le texte à droite */
-  gap: 10px; /* Espace entre l'image et le texte */
-  padding: 10px;
-  align-items: flex-start; /* Aligner en haut */
-  font-size: 19px; /* Taille de la police */
-  width: 400px; /* Largeur maximale du popup */
-  max-height: 50px; /* Hauteur maximale pour le popup */
-  background-color: white; /* Fond blanc pour le popup */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre pour le popup */
-  border-radius: 8px; /* Bords arrondis */
+<style>
+.popup-content {
+  display: flex !important;  /* Force flexbox */
+  flex-direction: row !important; /* S'assure que l'image et le texte sont côte à côte */
+  align-items: center !important; /* Alignement vertical */
+  justify-content: flex-start; /* Alignement horizontal */
+  gap: 15px;
+  max-width: 400px;
 }
 
-/* Conteneur de l'image */
+
 .mapbox-image-container {
   flex-shrink: 0;
-  width: 60px; /* Largeur de l'image */
-  height: 60px; /* Hauteur de l'image */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 60px;
+  height: 60px;
 }
 
-/* Style de l'image */
 .mapbox-image-container img {
-  width: 100%; /* L'image occupe toute la largeur du conteneur */
-  height: 100%; /* L'image occupe toute la hauteur du conteneur */
-  object-fit: cover; /* L'image couvre bien le conteneur */
-  border-radius: 8px; /* Bords arrondis pour l'image */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-/* Conteneur du texte */
 .mapbox-text-container {
+  flex-grow: 1; /* Permet au texte de prendre l’espace restant */
   display: flex;
-  flex-direction: column; /* Empile le titre et l'adresse verticalement */
-  justify-content: flex-start;
-  flex-grow: 1;
-  width: 100%; /* Assure que le texte prend tout l'espace restant */
+  flex-direction: column;
 }
 
 /* Style pour le titre (h3) */
