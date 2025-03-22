@@ -25,6 +25,8 @@ class TextToSpeechGeneratorService
   end
 
   def call
+    puts "calling TextToSpeechGeneratorService"
+
     begin
       url = "#{BASE_URL}/text-to-speech/#{voice_id}?output_format=mp3_44100_128"
       body = { text:, model_id: }

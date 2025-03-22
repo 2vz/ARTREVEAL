@@ -7,7 +7,9 @@
 
 <div class="image-container">
   <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
-    <%= image_tag @workart.image_url, class: "workart-image" %>
+    <% cache @workart do %>
+      <%= image_tag @workart.image_url, class: "workart-image" %>
+    <% end %>
   <% end %>
   <div class="gif-overlay">
     <img id="openModal" src="<%= asset_path('post-letter.gif') %>" alt="Ouvrir la modale">
@@ -182,7 +184,9 @@
   <div class="postcard">
     <div class="postcard-left">
                 <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
-            <%= image_tag @workart.image_url, class: "postcard-image" %>
+            <% cache @workart do %>
+              <%= image_tag @workart.image_url, class: "postcard-image" %>
+            <% end %>
           <% end %>
       <div class="stamp">
         <%= image_tag "stamp.png", class: "stamp-image" %>

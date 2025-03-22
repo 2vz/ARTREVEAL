@@ -12,4 +12,10 @@ class Workart < ApplicationRecord
 
   geocoded_by :address
   after_validation :geocode, if: :will_save_change_to_address?
+
+  def call_text_to_speech_service(description_type)
+    Rails.cache.fetch("#{cache_key_with_version}/call_text_to_speech_service") do
+      TextToSpeechGeneratorService.call(description_type)
+    end
+  end
 end
