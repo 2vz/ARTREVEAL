@@ -31,6 +31,23 @@ export default class extends Controller {
 
     // Ajoute un écouteur global pour fermer la popup quand on clique en dehors
     document.addEventListener("click", this.#closePopupOutside);
+
+    window.addEventListener("carouselWorkartChanged", (event) => {
+      const { lat, lng } = event.detail;
+
+      if (this.map) {
+        const mapHeight = this.element.offsetHeight;
+        const verticalOffset = Math.floor(mapHeight * 0.25); // même logique que #zoomOnWorkart
+
+        this.map.flyTo({
+          center: [lng, lat],
+          zoom: 12,
+          speed: 1.5,
+          curve: 1,
+          offset: [0, -verticalOffset],
+        });
+      }
+    });
   }
 
   #addMarkersToMap(markers) {
@@ -42,19 +59,49 @@ export default class extends Controller {
       const el = document.createElement("div");
       el.className = "custom-marker";
       el.innerHTML = `
-        <div class="icons">
-          <i class="fas fa-map-marker-alt" style="color: red;"></i>
-        </div>
         <div class="like-button">
           <svg class="like-heart" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
-            <path fill="white" stroke="pink" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <path fill="white" stroke="pink" stroke-width="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+            2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3
+            19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
         </div>
       `;
 
+      const likeButton = el.querySelector(".like-heart");
+      if (likeButton) {
+        likeButton.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          const carousel = document.getElementById("carousel-container");
+          if (carousel && carousel.style.display === "none") {
+            carousel.style.display = "flex";
+          }
+
+          // 1. Zoom sur la map (comme #zoomOnWorkart)
+          const mapHeight = this.element.offsetHeight;
+          const verticalOffset = Math.floor(mapHeight * 0.25);
+          this.map.flyTo({
+            center: [marker.lng, marker.lat],
+            zoom: 12,
+            speed: 1.5,
+            curve: 1,
+            offset: [0, -verticalOffset],
+          });
+
+          // 2. Dispatch un événement pour centrer la card
+          const event = new CustomEvent("workartIdChangedFromMap", {
+            detail: { idworkart: marker.idworkart },
+          });
+          window.dispatchEvent(event);
+        });
+      }
+
       const markerElement = new mapboxgl.Marker(el)
         .setLngLat([marker.lng, marker.lat])
         .addTo(this.map);
+
+      markerElement.getElement().dataset.markerIndex = index;
 
       markerElement.getElement().addEventListener("click", (event) => {
         event.stopPropagation();
@@ -156,11 +203,15 @@ export default class extends Controller {
   #zoomOnWorkart(marker) {
     if (!marker || !this.map) return;
 
+    const mapHeight = this.element.offsetHeight;
+    const verticalOffset = Math.floor(mapHeight * 0.25); // Décale de 25% de la hauteur de la carte
+
     this.map.flyTo({
       center: [marker.lng, marker.lat],
       zoom: 12,
-      speed: 0.8,
+      speed: 1.5,
       curve: 1,
+      offset: [0, -verticalOffset], // X = 0 (pas de décalage horizontal), Y = vers le haut
     });
   }
 }
