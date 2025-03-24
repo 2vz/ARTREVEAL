@@ -19,7 +19,7 @@
     <% sorted_workarts.each do |workart| %>
       <li style="padding: 10px; border-bottom: 1px solid #eee;">
         <!-- Lien vers la page show de l'œuvre -->
-        <a href="<%= workart[:show_url] %>" style="text-decoration: none; color: inherit;">
+        <div style="display: flex; align-items: center; text-decoration: none; color: inherit; width: 100%;">
           <div style="display: flex; align-items: center;">
             <!-- Image de l'œuvre -->
             <img src="<%= workart[:image_url] %>" alt="<%= workart[:workart_title] %>" style="width: 100px; height: auto; display: block; margin-right: 10px;">
@@ -33,7 +33,7 @@
               <span style="font-size: 20px; color: #f39c12; margin-left: 10px;">🔥</span>
             <% end %>
           </div>
-        </a>
+        </div>
       </li>
     <% end %>
   </ul>
@@ -47,9 +47,91 @@
   });
 <% end %>
 
+<script>
+  function handleCardClick(card) {
+    const url = card.dataset.url;
+    const rect = card.getBoundingClientRect();
+    const overlay = document.getElementById("transition-overlay");
 
-<div id="map-popup-container" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); z-index: 2000;">
-  <div id="map-popup-content"></div>
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    overlay.style.left = `${centerX}px`;
+    overlay.style.top = `${centerY}px`;
+    overlay.style.width = `1px`;
+    overlay.style.height = `1px`;
+    overlay.style.borderRadius = "0";
+    overlay.style.display = "block";
+    overlay.style.transform = "scale(1)";
+    overlay.style.opacity = "1";
+
+    // Force reflow
+    void overlay.offsetWidth;
+
+    overlay.style.transition = "transform 0.8s ease-in-out";
+    overlay.style.transform = "scale(2000)";
+
+    setTimeout(() => {
+      window.location.href = url;
+    }, 900);
+  }
+
+  // Attach dynamically after slight delay
+  function attachCardListeners() {
+    const cards = document.querySelectorAll(".carousel-card");
+    cards.forEach(card => {
+      if (!card.dataset.listenerAttached) {
+        card.addEventListener("click", () => handleCardClick(card));
+        card.dataset.listenerAttached = "true"; // Avoid double binding
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", attachCardListeners);
+  document.addEventListener("turbo:load", attachCardListeners); // in case of Turbo
+  window.addEventListener("scroll", attachCardListeners);        // if cards appear after scroll
+  window.addEventListener("workartIdChangedFromMap", attachCardListeners); // swipe
+</script>
+
+
+<!-- Carousel des œuvres likées -->
+<div id="carousel-container" data-controller="carousel" style="position: fixed; bottom: 0; left: 0; width: 100%; overflow-x: scroll; display: none; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; z-index: 2000; background: transparent; padding: 20px 10px;">
+  <%
+    workart_id_from_url = params[:workart_id]&.to_i
+    ordered_markers = if workart_id_from_url
+      main = @markers.find { |m| m[:idworkart] == workart_id_from_url }
+      rest = @markers.reject { |m| m[:idworkart] == workart_id_from_url }
+      main ? [main] + rest : @markers
+    else
+      @markers
+    end
+  %>
+
+  <% ordered_markers.each_with_index do |marker, index| %>
+    <div class="carousel-card"
+     data-index="<%= index %>"
+     data-idworkart="<%= marker[:idworkart] %>"
+     data-lat="<%= marker[:lat] %>"
+     data-lng="<%= marker[:lng] %>"
+     data-url="/workarts/<%= marker[:idworkart] %>"
+     style="scroll-snap-align: center; flex: 0 0 80%; max-width: 80%; background: white; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 0 10px; display: flex; align-items: center; padding: 10px; cursor: pointer;">
+      <a href="/workarts/<%= marker[:idworkart] %>" style="display: flex; align-items: center; text-decoration: none; color: inherit; width: 100%;">
+        <% is_valid_url = marker[:imageUrl].to_s.match?(/\Ahttps?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)\z/i) %>
+
+        <% if is_valid_url %>
+          <img src="<%= marker[:imageUrl] %>" alt="<%= marker[:title] %>" style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px; margin-right: 15px; flex-shrink: 0;">
+        <% else %>
+          <div style="width: 80px; height: 80px; background-color: #F9F5F1; display: flex; align-items: center; justify-content: center; border-radius: 10px; margin-right: 15px; flex-shrink: 0;">
+            <img src="<%= asset_path("artreveal_logo_grey_version.svg") %>" alt="ArtReveal logo" style="width: 40px; height: 40px;">
+          </div>
+        <% end %>
+        <div>
+          <h3 style="margin: 0; font-size: 16px;"><%= marker[:title] %></h3>
+          <p style="margin: 5px 0 0; font-size: 14px; color: #666;"><%= marker[:address] %></p>
+        </div>
+      </a>
+    </div>
+  <% end %>
 </div>
 
 <div id="liked-popup-container" style="position: fixed; top: 10%; right: 0; width: 300px; max-height: 90%; overflow-y: auto; background: white; box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 10px;">
@@ -64,6 +146,7 @@
 
 <!-- Inclure les données workarts en format JSON -->
 
+<div id="transition-overlay" style="display: none;"></div>
 
 <!-- Conteneur pour l'image -->
 <style>
@@ -75,7 +158,6 @@
   gap: 15px;
   max-width: 400px;
 }
-
 
 .mapbox-image-container {
   flex-shrink: 0;
@@ -137,4 +219,24 @@
   background: rgba(0, 0, 0, 0.9);
 }
 
+#carousel-container {
+  scrollbar-width: none; /* Firefox */
+}
+
+#carousel-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, iOS */
+}
+
+#transition-overlay {
+  position: fixed;
+  border-radius: 0; /* Pas rond */
+  background-color: white;
+  width: 100px;
+  height: 100px;
+  transform: scale(0);
+  opacity: 1;
+  z-index: 9999;
+  transition: transform 1s ease-out, opacity 0.3s ease 0.7s;
+  pointer-events: none;
+}
 </style>
