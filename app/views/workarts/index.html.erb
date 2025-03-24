@@ -95,7 +95,12 @@
 
 
 <!-- Carousel des œuvres likées -->
-<div id="carousel-container" data-controller="carousel" style="position: fixed; bottom: 0; left: 0; width: 100%; overflow-x: scroll; display: none; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; z-index: 2000; background: transparent; padding: 20px 10px;">
+<%
+  show_carousel = params[:workart_id].present?
+  carousel_display = show_carousel ? "flex" : "none"
+%>
+
+<div id="carousel-container" data-controller="carousel" style="position: fixed; bottom: 0; left: 0; width: 100%; overflow-x: scroll; display: <%= carousel_display %>; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; z-index: 2000; background: transparent; padding: 20px 10px;">
   <%
     workart_id_from_url = params[:workart_id]&.to_i
     ordered_markers = if workart_id_from_url
