@@ -43,7 +43,8 @@ body {
   background-color: white;
   box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
-  transform: translateY(80%);
+  transform: translateY(90%);
+  height: 80%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
   z-index: 1000;
@@ -60,6 +61,7 @@ body {
   margin: 10px auto;
   border-radius: 3px;
   cursor: pointer;
+  z-index:9999;
 }
 
 .panel-content {
