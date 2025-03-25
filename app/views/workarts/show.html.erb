@@ -18,6 +18,8 @@
   <div class="panel-handle" id="panelHandle"></div>
   <div class="panel-content">
 
+  <div style="height:10vh;">  </div>
+
     <div data-controller="panel-manager">
 
         <div class="panel-manager">
@@ -84,7 +86,7 @@
             <div class="workart-details">
               <h1 class="title"><%= @workart.workart_title %></h1>
               <div class="reading-time" id="reading-time">
-              <i class="fa-solid fa-book-open"></i>
+              <i class="fa-solid fa-clock"></i>
                 <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
               </div>
               <br>
@@ -152,7 +154,7 @@
             <div class="workart-details">
               <h1 class="title"><%= @workart.workart_title %></h1>
               <div class="reading-time" id="reading-time">
-              <i class="fa-solid fa-book-open"></i>
+              <i class="fa-solid fa-clock"></i>
                 <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
               </div>
               <br>
@@ -182,43 +184,56 @@
   </div>
 </div>
 
-
-
 <script>
- document.addEventListener('DOMContentLoaded', () => {
-            const panel = document.getElementById('slidingPanel');
-            const handle = document.getElementById('panelHandle');
+document.addEventListener('DOMContentLoaded', () => {
+    const panel = document.getElementById('slidingPanel');
+    const handle = document.getElementById('panelHandle');
+    const audioPlayers = document.querySelectorAll('audio');
 
-            let isDragging = false;
-            let startY;
+    let isDragging = false;
+    let startY;
+    let threshold = 50;
 
-            handle.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startY = e.clientY;
-                panel.classList.add('active');
-            });
+    handle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        e.preventDefault();
+    });
 
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaY = startY - e.clientY;
+        if (deltaY > threshold) {
+            panel.classList.add('active');
+        } else if (deltaY < -threshold) {
+            panel.classList.remove('active');
+        }
+    });
 
-                const currentY = e.clientY;
-                const deltaY = startY - currentY;
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
 
-                if (deltaY > 50) {
-                    panel.classList.add('active');
-                }
-            });
+    handle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        panel.classList.toggle('active');
+    });
 
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
+    panel.addEventListener('click', (e) => {
+        if (e.target === panel) {
+            panel.classList.remove('active');
+        }
+    });
 
-            // Option de fermeture du panel
-            panel.addEventListener('click', () => {
-                panel.classList.toggle('active');
-            });
+    audioPlayers.forEach(audio => {
+        audio.addEventListener('click', (e) => {
+            e.stopPropagation();
         });
-    </script>
+    });
+});
+
+</script>
+
 
 
 
@@ -304,7 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const handle = document.getElementById('panelHandle');
     const openModal = document.getElementById('openModal');
 
-    // Modal elements
     const modal = document.getElementById("emailModal");
     const closeBtn = document.querySelector(".close");
     const emailForm = document.querySelector("#emailModal form");
@@ -333,9 +347,9 @@ document.addEventListener('DOMContentLoaded', () => {
         isDragging = false;
     });
 
-    // Modal logic
+
     openModal.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent panel from closing
+        e.stopPropagation();
         modal.style.display = "block";
     });
 
@@ -395,7 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Prevent panel closure when clicking on modal icon or its children
     panel.addEventListener('click', (e) => {
         if (e.target !== openModal && !openModal.contains(e.target)) {
             panel.classList.toggle('active');
