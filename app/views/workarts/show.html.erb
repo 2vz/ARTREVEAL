@@ -87,7 +87,7 @@
               <h1 class="title"><%= @workart.workart_title %></h1>
               <div class="reading-time" id="reading-time">
               <i class="fa-solid fa-clock"></i>
-                <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+                <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
               </div>
               <br>
               <p class="description" id="description"><%= @workart.description_short %></p>
@@ -121,7 +121,7 @@
               <h1 class="title"><%= @workart.workart_title %></h1>
               <div class="reading-time" id="reading-time">
               <i class="fa-solid fa-clock"></i>
-                <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+                <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
               </div>
               <br>
               <p class="description" id="description"><%= @workart.description_middle %></p>
@@ -155,7 +155,7 @@
               <h1 class="title"><%= @workart.workart_title %></h1>
               <div class="reading-time" id="reading-time">
               <i class="fa-solid fa-clock"></i>
-                <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+                <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
               </div>
               <br>
               <p class="description" id="description"><%= @workart.description_long %></p>
@@ -185,51 +185,51 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const panel = document.getElementById('slidingPanel');
-    const handle = document.getElementById('panelHandle');
-    const audioPlayers = document.querySelectorAll('audio');
+  document.addEventListener('DOMContentLoaded', () => {
+      const panel = document.getElementById('slidingPanel');
+      const handle = document.getElementById('panelHandle');
+      const audioPlayers = document.querySelectorAll('audio');
 
-    let isDragging = false;
-    let startY;
-    let threshold = 50;
+      let isDragging = false;
+      let startY;
+      let threshold = 50;
 
-    handle.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startY = e.clientY;
-        e.preventDefault();
-    });
+      handle.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          startY = e.clientY;
+          e.preventDefault();
+      });
 
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const deltaY = startY - e.clientY;
-        if (deltaY > threshold) {
-            panel.classList.add('active');
-        } else if (deltaY < -threshold) {
-            panel.classList.remove('active');
-        }
-    });
+  document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const deltaY = startY - e.clientY;
+      if (deltaY > threshold) {
+          panel.classList.add('active');
+      } else if (deltaY < -threshold) {
+          panel.classList.remove('active');
+      }
+  });
 
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
+  document.addEventListener('mouseup', () => {
+      isDragging = false;
+  });
 
-    handle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        panel.classList.toggle('active');
-    });
+  handle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.classList.toggle('active');
+  });
 
-    panel.addEventListener('click', (e) => {
-        if (e.target === panel) {
-            panel.classList.remove('active');
-        }
-    });
+  panel.addEventListener('click', (e) => {
+      if (e.target === panel) {
+          panel.classList.remove('active');
+      }
+  });
 
-    audioPlayers.forEach(audio => {
-        audio.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    });
+  audioPlayers.forEach(audio => {
+      audio.addEventListener('click', (e) => {
+          e.stopPropagation();
+      });
+  });
 });
 
 </script>
@@ -272,7 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
-
     <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
       <div class="field">
         <%= f.label :recipient, "Mon mail :" %>
@@ -310,8 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <% end %>
   </div>
 </div>
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
