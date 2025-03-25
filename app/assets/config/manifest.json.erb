@@ -3,7 +3,6 @@
   "description": "Point. Scan. Reveal the secrets of art in seconds.",
   "display": "fullscreen",
   "name": "ArtReveal",
-  “start_url”: “/”,
   "icons": [
     <% files = Dir.entries(Rails.root.join("app/assets/images/icons/")).select {|f| !File.directory? f} %>
     <% files.each_with_index do |file, index| %>
