@@ -70,11 +70,11 @@
                 <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
                 <div class= "like-button">
                   <% if @user_workart %>
-                    <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                    <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
                       <i class="fa-solid fa-heart"></i>
                     <% end %>
                   <% else %>
-                    <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                    <%= button_to workart_user_workarts_path(@workart), class: "like-button", method: :post, data: { turbo: false } do %>
                       <i class="fa-regular fa-heart"></i>
                     <% end %>
                   <% end %>
@@ -105,11 +105,11 @@
                 <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
                 <div class= "like-button">
                   <% if @user_workart %>
-                    <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                    <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
                       <i class="fa-solid fa-heart"></i>
                     <% end %>
                   <% else %>
-                    <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                    <%= button_to workart_user_workarts_path(@workart), class: "like-button", method: :post, data: { turbo: false } do %>
                       <i class="fa-regular fa-heart"></i>
                     <% end %>
                   <% end %>
@@ -139,11 +139,11 @@
                 <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
                 <div class= "like-button">
                   <% if @user_workart %>
-                    <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                    <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
                       <i class="fa-solid fa-heart"></i>
                     <% end %>
                   <% else %>
-                    <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                    <%= button_to workart_user_workarts_path(@workart), class: "like-button", method: :post, data: { turbo: false } do %>
                       <i class="fa-regular fa-heart"></i>
                     <% end %>
                   <% end %>
@@ -184,7 +184,7 @@
   </div>
 </div>
 
-<script>
+<%# <script>
   document.addEventListener('DOMContentLoaded', () => {
       const panel = document.getElementById('slidingPanel');
       const handle = document.getElementById('panelHandle');
@@ -200,28 +200,30 @@
           e.preventDefault();
       });
 
-  document.addEventListener('mousemove', (e) => {
+  handle.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
       const deltaY = startY - e.clientY;
       if (deltaY > threshold) {
           panel.classList.add('active');
+
       } else if (deltaY < -threshold) {
           panel.classList.remove('active');
       }
   });
 
-  document.addEventListener('mouseup', () => {
+  handle.addEventListener('mouseup', () => {
       isDragging = false;
   });
 
   handle.addEventListener('click', (e) => {
       e.stopPropagation();
+          console.log("hey")
       panel.classList.toggle('active');
   });
 
-  panel.addEventListener('click', (e) => {
+  handle.addEventListener('click', (e) => {
       if (e.target === panel) {
-          panel.classList.remove('active');
+          // panel.classList.remove('active');
       }
   });
 
@@ -232,13 +234,7 @@
   });
 });
 
-</script>
-
-
-
-
-
-
+</script> %>
 
 <div id="emailModal" class="modal">
   <div class="modal-content">
@@ -315,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const panel = document.getElementById('slidingPanel');
     const handle = document.getElementById('panelHandle');
     const openModal = document.getElementById('openModal');
-
+    const audioPlayers = document.querySelectorAll('audio');
     const modal = document.getElementById("emailModal");
     const closeBtn = document.querySelector(".close");
     const emailForm = document.querySelector("#emailModal form");
@@ -323,11 +319,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDragging = false;
     let startY;
 
-    handle.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startY = e.clientY;
-        panel.classList.add('active');
-    });
+    // handle.addEventListener('mousedown', (e) => {
+    //     isDragging = true;
+    //     startY = e.clientY;
+    //     panel.classList.add('active');
+    // });
 
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
@@ -406,10 +402,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    panel.addEventListener('click', (e) => {
-        if (e.target !== openModal && !openModal.contains(e.target)) {
-            panel.classList.toggle('active');
-        }
+    handle.addEventListener('click', (e) => {
+      // console.log(panel.classList.contains("active"))
+      // if (panel.classList.contains("active")) {
+      //   console.log("heyo2")
+      //   panel.classList.remove("active");
+      // } else {
+      //   console.log("heyo")
+      //   panel.classList.add("active");
+      // }
+      panel.classList.toggle("active")
     });
+
+    handle.addEventListener('touchstart', (e) => {
+      panel.classList.toggle("active")
+    });
+
+    audioPlayers.forEach(audio => {
+      audio.addEventListener('click', (e) => {
+          e.stopPropagation();
+      });
+  });
+
 });
 </script>
