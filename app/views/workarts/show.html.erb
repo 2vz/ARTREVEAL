@@ -4,6 +4,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/plugins/CSSPlugin.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/easing/EasePack.min.js"></script>
 
+<div><%= image_tag "artreveal_logo_grey_version.svg" , alt: "logo ArtReveal", class: "logo-show" %></div>
 
 <div class="image-container">
   <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
@@ -11,167 +12,217 @@
       <%= image_tag @workart.image_url, class: "workart-image" %>
     <% end %>
   <% end %>
-  <div class="gif-overlay">
-    <img id="openModal" src="<%= asset_path('post-letter.gif') %>" alt="Ouvrir la modale">
+</div>
+
+<div class="sliding-panel" id="slidingPanel">
+  <div class="panel-handle" id="panelHandle"></div>
+  <div class="panel-content">
+
+    <div data-controller="panel-manager">
+
+        <div class="panel-manager">
+
+          <div class="audio-players" >
+            <% if @audio_paths[:short].present? %>
+              <div data-panel-manager-target="shortContainer">
+                <%= render partial: 'audio_player', locals: {
+                  player_id: 'short',
+                  custom_class: 'short',
+                  audio_target: 'audioShort',
+                  audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
+                } %>
+              </div>
+            <% end %>
+
+            <% if @audio_paths[:middle].present? %>
+              <div data-panel-manager-target="middleContainer" class="d-none">
+                <%= render partial: 'audio_player', locals: {
+                  player_id: 'middle',
+                  custom_class: 'middle',
+                  audio_target: 'audioMiddle',
+                  audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
+                } %>
+              </div>
+            <% end %>
+
+            <% if @audio_paths[:long].present? %>
+              <div data-panel-manager-target="longContainer" class="d-none" >
+                <%= render partial: 'audio_player', locals: {
+                  player_id: 'long',
+                  custom_class: 'long',
+                  audio_target: 'audioLong',
+                  audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
+                } %>
+                </div>
+            <% end %>
+          </div>
+
+          <div data-panel-manager-target="short">
+            <div class="container-below-image">
+              <div class="icon-like-container">
+                <div class="icon-map">
+                  <%= link_to workarts_path(workart_id: @workart.id) do %>
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  <% end %>
+                </div>
+                <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
+                <div class= "like-button">
+                  <% if @user_workart %>
+                    <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                      <i class="fa-solid fa-heart"></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                      <i class="fa-regular fa-heart"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="workart-details">
+              <h1 class="title"><%= @workart.workart_title %></h1>
+              <div class="reading-time" id="reading-time">
+              <i class="fa-solid fa-book-open"></i>
+                <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+              </div>
+              <br>
+              <p class="description" id="description"><%= @workart.description_short %></p>
+            </div>
+          </div>
+
+          <div data-panel-manager-target="middle" class="d-none">
+            <div class="container-below-image">
+              <div class="icon-like-container">
+                <div class="icon-map">
+                  <%= link_to workarts_path(@workart) do %>
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  <% end %>
+                </div>
+                <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
+                <div class= "like-button">
+                  <% if @user_workart %>
+                    <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                      <i class="fa-solid fa-heart"></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                      <i class="fa-regular fa-heart"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="workart-details">
+              <h1 class="title"><%= @workart.workart_title %></h1>
+              <div class="reading-time" id="reading-time">
+              <i class="fa-solid fa-clock"></i>
+                <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+              </div>
+              <br>
+              <p class="description" id="description"><%= @workart.description_middle %></p>
+            </div>
+          </div>
+
+          <div data-panel-manager-target="long" class="d-none">
+            <div class="container-below-image">
+              <div class="icon-like-container">
+                <div class="icon-map">
+                  <%= link_to workarts_path(@workart) do %>
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  <% end %>
+                </div>
+                <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
+                <div class= "like-button">
+                  <% if @user_workart %>
+                    <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
+                      <i class="fa-solid fa-heart"></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
+                      <i class="fa-regular fa-heart"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="workart-details">
+              <h1 class="title"><%= @workart.workart_title %></h1>
+              <div class="reading-time" id="reading-time">
+              <i class="fa-solid fa-book-open"></i>
+                <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
+              </div>
+              <br>
+              <p class="description" id="description"><%= @workart.description_long %></p>
+            </div>
+          </div>
+
+          <div class="button-menu">
+            <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
+
+              <div>
+                <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
+              </div>
+
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
+              <label class="btn btn-outline-secondary" for="btnradio2"><i class="fa-solid fa-file"></i> Casual</label>
+
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
+              <label class="btn btn-outline-secondary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-book"></i> Storytelled</label>
+            </div>
+          </div>
+
+        </div>
+
+    </div>
   </div>
 </div>
 
-<div data-controller="panel-manager">
-
-  <div class="panel-manager">
-
-    <div data-panel-manager-target="short">
-      <div class="container-below-image">
-        <div class="reading-time" id="reading-time">
-        <i class="fa-solid fa-book-open"></i>
-          <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
-        </div>
-        <div class="icon-like-container">
-          <div class="icon-map">
-            <%= link_to workarts_path(workart_id: @workart.id) do %>
-              <i class="fa-solid fa-map-location-dot"></i>
-            <% end %>
-          </div>
-          <div class= "like-button">
-            <% if @user_workart %>
-              <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
-                <i class="fa-solid fa-heart"></i>
-              <% end %>
-            <% else %>
-              <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
-                <i class="fa-regular fa-heart"></i>
-              <% end %>
-            <% end %>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="workart-details">
-        <h1 class="title"><%= @workart.workart_title %></h1>
-        <p class="description" id="description"><%= @workart.description_short %></p>
-      </div>
-    </div>
-
-    <div data-panel-manager-target="middle" class="d-none">
-      <div class="container-below-image">
-        <div class="reading-time" id="reading-time">
-        <i class="fa-solid fa-book-open"></i>
-          <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
-        </div>
-        <div class="icon-like-container">
-          <div class="icon-map">
-            <%= link_to workarts_path(@workart) do %>
-              <i class="fa-solid fa-map-location-dot"></i>
-            <% end %>
-          </div>
-          <div class= "like-button">
-            <% if @user_workart %>
-              <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
-                <i class="fa-solid fa-heart"></i>
-              <% end %>
-            <% else %>
-              <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
-                <i class="fa-regular fa-heart"></i>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <div class="workart-details">
-        <h1 class="title"><%= @workart.workart_title %></h1>
-        <p class="description" id="description"><%= @workart.description_middle %></p>
-      </div>
-    </div>
-
-    <div data-panel-manager-target="long" class="d-none">
-      <div class="container-below-image">
-        <div class="reading-time" id="reading-time">
-        <i class="fa-solid fa-book-open"></i>
-          <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} secondes de lecture" %>
-        </div>
-        <div class="icon-like-container">
-          <div class="icon-map">
-            <%= link_to workarts_path(@workart) do %>
-              <i class="fa-solid fa-map-location-dot"></i>
-            <% end %>
-          </div>
-          <div class= "like-button">
-            <% if @user_workart %>
-              <%= link_to user_workart_path(@user_workart), class: "like-button", data: { turbo_method: :delete } do  %>
-                <i class="fa-solid fa-heart"></i>
-              <% end %>
-            <% else %>
-              <%= link_to workart_user_workarts_path(@workart), class: "like-button", data: { turbo_method: :post } do %>
-                <i class="fa-regular fa-heart"></i>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <div class="workart-details">
-        <h1 class="title"><%= @workart.workart_title %></h1>
-        <p class="description" id="description"><%= @workart.description_long %></p>
-      </div>
-    </div>
-
-  <div class="audio-players" >
-      <% if @audio_paths[:short].present? %>
-        <div data-panel-manager-target="shortContainer">
-          <%= render partial: 'audio_player', locals: {
-            player_id: 'short',
-            custom_class: 'short',
-            audio_target: 'audioShort',
-            audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
-          } %>
-        </div>
-      <% end %>
-
-      <% if @audio_paths[:middle].present? %>
-        <div data-panel-manager-target="middleContainer" class="d-none">
-          <%= render partial: 'audio_player', locals: {
-            player_id: 'middle',
-            custom_class: 'middle',
-            audio_target: 'audioMiddle',
-            audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
-          } %>
-        </div>
-      <% end %>
-
-      <% if @audio_paths[:long].present? %>
-        <div data-panel-manager-target="longContainer" class="d-none" >
-          <%= render partial: 'audio_player', locals: {
-            player_id: 'long',
-            custom_class: 'long',
-            audio_target: 'audioLong',
-            audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
-          } %>
-          </div>
-      <% end %>
-    </div>
 
 
-    <div class="button-menu">
-      <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
+<script>
+ document.addEventListener('DOMContentLoaded', () => {
+            const panel = document.getElementById('slidingPanel');
+            const handle = document.getElementById('panelHandle');
 
-        <div>
-          <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
-          <label class="btn btn-outline-secondary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
-        </div>
+            let isDragging = false;
+            let startY;
 
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
-        <label class="btn btn-outline-secondary" for="btnradio2"><i class="fa-solid fa-file"></i> Casual</label>
+            handle.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startY = e.clientY;
+                panel.classList.add('active');
+            });
 
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
-        <label class="btn btn-outline-secondary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-book"></i> Storytelled</label>
-      </div>
-    </div>
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
 
-  </div>
+                const currentY = e.clientY;
+                const deltaY = startY - currentY;
 
-</div>
+                if (deltaY > 50) {
+                    panel.classList.add('active');
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Option de fermeture du panel
+            panel.addEventListener('click', () => {
+                panel.classList.toggle('active');
+            });
+        });
+    </script>
+
+
+
+
 
 
 <div id="emailModal" class="modal">
@@ -248,77 +299,107 @@
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', () => {
+    const panel = document.getElementById('slidingPanel');
+    const handle = document.getElementById('panelHandle');
+    const openModal = document.getElementById('openModal');
+
+    // Modal elements
     const modal = document.getElementById("emailModal");
-    const openBtn = document.getElementById("openModal");
     const closeBtn = document.querySelector(".close");
     const emailForm = document.querySelector("#emailModal form");
-      
-    openBtn.addEventListener("click", () => {
-      modal.style.display = "block";
+
+    let isDragging = false;
+    let startY;
+
+    handle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        panel.classList.add('active');
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const currentY = e.clientY;
+        const deltaY = startY - currentY;
+
+        if (deltaY > 50) {
+            panel.classList.add('active');
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    // Modal logic
+    openModal.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent panel from closing
+        modal.style.display = "block";
     });
 
     closeBtn.addEventListener("click", () => {
-      modal.style.display = "none";
+        modal.style.display = "none";
     });
 
     window.addEventListener("click", (event) => {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
     });
-
 
     emailForm.addEventListener("submit", function(event) {
-      event.preventDefault();
+        event.preventDefault();
 
-      const formData = new FormData(emailForm);
+        const formData = new FormData(emailForm);
 
-
-      fetch(emailForm.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        credentials: 'same-origin'
-      })
-      .then(response => {
-
-        showConfirmationMessage();
-      })
-      .catch(error => {
-
-        console.log("Erreur d'envoi:", error);
-        showConfirmationMessage();
-      });
+        fetch(emailForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            showConfirmationMessage();
+        })
+        .catch(error => {
+            console.log("Erreur d'envoi:", error);
+            showConfirmationMessage();
+        });
     });
 
-
     function showConfirmationMessage() {
+        const formContent = emailForm.parentElement;
 
-      const formContent = emailForm.parentElement;
+        const confirmationDiv = document.createElement("div");
+        confirmationDiv.className = "email-confirmation";
+        confirmationDiv.innerHTML = `
+            <div class="confirmation-icon">✓</div>
+            <h3>Mail programmé !</h3>
+            <p>Votre message vous sera envoyé à la date choisie.</p>
+            <button id="back-to-workart" class="btn-back">Retour à l'œuvre</button>
+        `;
 
+        formContent.innerHTML = '';
+        formContent.appendChild(confirmationDiv);
 
-      const confirmationDiv = document.createElement("div");
-      confirmationDiv.className = "email-confirmation";
-      confirmationDiv.innerHTML = `
-        <div class="confirmation-icon">✓</div>
-        <h3>Mail programmé !</h3>
-        <p>Votre message vous sera envoyé à la date choisie.</p>
-        <button id="back-to-workart" class="btn-back">Retour à l'œuvre</button>
-      `;
+        document.getElementById("back-to-workart").addEventListener("click", function() {
+            modal.style.display = "none";
 
-      formContent.innerHTML = '';
-      formContent.appendChild(confirmationDiv);
-
-      document.getElementById("back-to-workart").addEventListener("click", function() {
-        modal.style.display = "none";
-
-        setTimeout(() => {
-          location.reload();
-        }, 100);
-      });
+            setTimeout(() => {
+                location.reload();
+            }, 100);
+        });
     }
-  });
+
+    // Prevent panel closure when clicking on modal icon or its children
+    panel.addEventListener('click', (e) => {
+        if (e.target !== openModal && !openModal.contains(e.target)) {
+            panel.classList.toggle('active');
+        }
+    });
+});
 </script>

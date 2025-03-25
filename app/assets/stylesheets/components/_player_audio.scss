@@ -1,7 +1,7 @@
 
   .audio-players {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
   }
 
@@ -53,8 +53,8 @@
   }
 
   .play-button {
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
     min-width: 30px;
     border-radius: 50%;
     border: none;
@@ -75,6 +75,6 @@
   }
 
   .play-icon, .pause-icon {
-    font-size: 15px;
-    color: #4776E6;
+    font-size: 30px;
+    color: var(--primary-color);
   }
