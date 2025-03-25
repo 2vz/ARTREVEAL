@@ -15,8 +15,35 @@
         
         <div data-photo-capture-target="previewContainer" class="position-fixed top-0 start-0 w-100 h-100 d-none bg-black">
             <img data-photo-capture-target="previewImage" class="w-100 h-100 object-fit-cover">
-            <button data-photo-capture-target="closePreview" data-action="click->photo-capture#delete" class="position-absolute top-0 end-0 m-3 btn-close-white">✖</button>
-            <button data-photo-capture-target="sendPreview" data-action="click->photo-capture#sendImage" class="position-absolute bottom-0 end-0 m-3">Analyze workart</button>
+            <button data-photo-capture-target="closePreview"
+                    data-action="click->photo-capture#delete"
+                    style="position: absolute; top: 16px; right: 8px; background: transparent; border: none; z-index: 10;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"
+                  viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-x">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            <button data-photo-capture-target="sendPreview"
+                    data-action="click->photo-capture#sendImage"
+                    style="position: absolute;
+                          bottom: 24px;
+                          right: 24px;
+                          background-color: white;
+                          color: black;
+                          font-weight: 600;
+                          font-size: 16px;
+                          padding: 12px 24px;
+                          border: none;
+                          border-radius: 9999px;
+                          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                          z-index: 10;">
+              Analyze workart
+            </button>
+
         </div>
         
         <%= form_with url: scan_path, local: true, multipart: true, class: "d-none" do |f| %> 
@@ -61,3 +88,11 @@
     <p>En cours d’analyse...</p>
   </div>
 </div>
+
+<script type="module">
+  import { createIcons, icons } from "lucide";
+
+  document.addEventListener("turbo:load", () => {
+    createIcons({ icons });
+  });
+</script>
