@@ -27,9 +27,9 @@ class WorkartsController < ApplicationController
 
     # Récupère toutes les œuvres avec leur nombre total de likes pour la liste
     @workarts_with_likes = Workart
-    .left_joins(:user_workarts) # On inclut toutes les œuvres, même celles sans likes
-    .select('workarts.id, workarts.image_url, workarts.workart_title, COUNT(user_workarts.id) AS likes_count')
-    .group('workarts.id') # Regroupe les résultats par l'ID de l'œuvre
+  .left_joins(:user_workarts)
+  .select('workarts.id, workarts.image_url, workarts.workart_title, COUNT(user_workarts.id) AS likes_count')
+  .group('workarts.id')
 
   # Crée un tableau avec les œuvres et leur nombre total de likes
   @workarts_with_likes = @workarts_with_likes.map do |workart|
@@ -41,6 +41,7 @@ class WorkartsController < ApplicationController
       show_url: workart_path(workart)
     }
 end
+
   end
 
 
