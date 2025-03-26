@@ -71,7 +71,7 @@ workarts = [
     description_short: "Claude Monet's revolutionary 1872 maritime landscape that gave name to the Impressionist movement, capturing the ephemeral play of light and color in a harbor at dawn with loose, innovative brushwork.",
     description_middle: "Painted in 1872, this groundbreaking artwork represents a pivotal moment in art history. Monet's radical approach to capturing light and atmosphere, using quick, visible brushstrokes and a vibrant color palette, challenged traditional painting techniques and laid the foundation for the Impressionist movement.",
     description_long: "Impression, Sunrise is more than a painting—it's a manifesto of artistic revolution. Depicting the port of Le Havre at sunrise, Monet broke from academic painting traditions by prioritizing the artist's perceptual experience over detailed representation. The painting's loose brushwork and emphasis on atmospheric effects would inspire an entire generation of artists.",
-    image_url: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Claude_Monet%2C_Impression%2C_soleil_levant%2C_1872.jpg?20120111170102",
+    image_url: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Claude_Monet%2C_Impression%2C_soleil_levant%2C_1872.jpg",
     address: "Musée Marmottan Monet, 2 Rue Louis Boilly, 75016 Paris, France"
   },
   {
@@ -89,7 +89,7 @@ workarts = [
     description_short: "Leonardo da Vinci's iconic c. 1490 drawing illustrating the ideal human body proportions, blending art, science, and philosophy in a single, revolutionary image that symbolizes Renaissance humanist ideals.",
     description_middle: "Created around 1490, the Vitruvian Man is a remarkable synthesis of artistic observation and scientific precision. Based on the writings of the Roman architect Vitruve, da Vinci's drawing explores the mathematical proportions of the human body, positioning man at the center of the universe and reflecting the Renaissance's holistic view of human potential.",
     description_long: "The Vitruvian Man represents the pinnacle of Renaissance thought, where art, science, and philosophy converge. Da Vinci's drawing is not merely an anatomical study but a profound philosophical statement about human potential and cosmic harmony. By inscribing a human figure within a circle and square, he visualizes the idea that human beings are a microcosm of the universe.",
-    image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Da_Vinci_Vitruve_Luc_Viatour.jpg/882px-Da_Vinci_Vitruve_Luc_Viatour.jpg?20100914054557",
+    image_url: "https://upload.wikimedia.org/wikipedia/commons/2/22/Da_Vinci_Vitruve_Luc_Viatour.jpg",
     address: "Gallerie dell'Accademia, Calle della Carità, 1050, 30123 Venice, Italy"
   },
   {
@@ -98,7 +98,7 @@ workarts = [
     description_short: "Gustav Klimt's 1907-1908 masterpiece of Art Nouveau, depicting an intimate, golden-clad couple in a passionate embrace, symbolizing love, sensuality, and the decorative elegance of the early 20th-century artistic movement.",
     description_middle: "Painted between 1907 and 1908, The Kiss represents the zenith of Klimt's 'Golden Period'. The artwork blends figurative representation with intricate, decorative patterns, creating a mesmerizing visualization of romantic love. The couple's bodies are adorned with elaborate gold leaf and geometric designs, symbolizing unity and transcendence.",
     description_long: "The Kiss is a testament to Klimt's revolutionary artistic vision. Set against a backdrop of shimmering gold and intricate geometric patterns, the painting transforms a simple romantic moment into a cosmic, almost spiritual experience. The lovers are simultaneously individual and merged, their bodies decorated with ornate, symbolic designs that reflect the complex emotional and aesthetic landscape of early 20th-century Vienna.",
-    image_url: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Gustav_Klimt_016.jpg?20120409065933",
+    image_url: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Gustav_Klimt_016.jpg",
     address: "Österreichische Galerie Belvedere, Prinz-Eugen-Straße 27, 1030 Vienna, Austria"
   },
   {
@@ -107,7 +107,7 @@ workarts = [
     description_short: "Michelangelo's iconic 1511-1512 fresco on the Sistine Chapel ceiling, depicting the biblical moment of God giving life to Adam, a masterpiece of Renaissance art that symbolizes divine creation and human potential.",
     description_middle: "Created between 1511 and 1512 as part of the Sistine Chapel ceiling, this fresco is a pinnacle of Renaissance artistic achievement. Michelangelo's extraordinary anatomical precision and dramatic composition capture the profound theological moment of divine creation, with God and Adam's fingers nearly touching in a powerful, symbolic gesture.",
     description_long: "The Creation of Adam transcends mere religious illustration, becoming a philosophical statement about human nature and divine potential. Michelangelo's genius lies in transforming a biblical narrative into a universal statement about the relationship between humanity and the divine. The tension between the almost-touching fingers of God and Adam represents the spark of life, creativity, and human potential.",
-    image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/%27Adam%27s_Creation_Sistine_Chapel_ceiling%27_by_Michelangelo_JBU33cut.jpg/640px-%27Adam%27s_Creation_Sistine_Chapel_ceiling%27_by_Michelangelo_JBU33cut.jpg",
+    image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Creaci%C3%B3n_de_Ad%C3%A1n.jpg/1599px-Creaci%C3%B3n_de_Ad%C3%A1n.jpg",
     address: "Sistine Chapel, 00120 Vatican City, Vatican City State"
   },
   {

@@ -60,6 +60,21 @@
           </div>
 
           <div data-panel-manager-target="short">
+            <div class="workart-details">
+              <h1 class="title"><%= @workart.workart_title %></h1>
+              <br>
+              <h2 class="author"><%= "by <b>#{@workart.primary_artist}</b>".html_safe %></h2>
+              <div class="reading-time" id="reading-time">
+              <br>
+              <i class="fa-solid fa-clock"></i>
+                <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
+              </div>
+              <br>
+              <p class="description" id="description"><%= @workart.description_short %></p>
+              <br><br>
+              <p class="description"><%= @workart.address %></p>
+            </div>
+
             <div class="container-below-image">
               <div class="icon-like-container">
                 <div class="icon-map">
@@ -67,7 +82,7 @@
                     <i class="fa-solid fa-map-location-dot"></i>
                   <% end %>
                 </div>
-                <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
+                <div class="icon-map"><i id="openModal1" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
                 <div class= "like-button">
                   <% if @user_workart %>
                     <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
@@ -79,56 +94,26 @@
                     <% end %>
                   <% end %>
                 </div>
-
               </div>
-            </div>
-
-            <div class="workart-details">
-              <h1 class="title"><%= @workart.workart_title %></h1>
-              <div class="reading-time" id="reading-time">
-              <i class="fa-solid fa-clock"></i>
-                <%= "#{( @workart.description_short.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
-              </div>
-              <br>
-              <p class="description" id="description"><%= @workart.description_short %></p>
             </div>
           </div>
 
           <div data-panel-manager-target="middle" class="d-none">
-            <div class="container-below-image">
-              <div class="icon-like-container">
-                <div class="icon-map">
-                  <%= link_to workarts_path(@workart) do %>
-                    <i class="fa-solid fa-map-location-dot"></i>
-                  <% end %>
-                </div>
-                <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
-                <div class= "like-button">
-                  <% if @user_workart %>
-                    <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
-                      <i class="fa-solid fa-heart"></i>
-                    <% end %>
-                  <% else %>
-                    <%= button_to workart_user_workarts_path(@workart), class: "like-button", method: :post, data: { turbo: false } do %>
-                      <i class="fa-regular fa-heart"></i>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-
             <div class="workart-details">
               <h1 class="title"><%= @workart.workart_title %></h1>
+              <br>
+              <h2 class="author"><%= "by <b>#{@workart.primary_artist}</b>".html_safe %></h2>
               <div class="reading-time" id="reading-time">
+              <br>
               <i class="fa-solid fa-clock"></i>
                 <%= "#{( @workart.description_middle.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
               </div>
               <br>
               <p class="description" id="description"><%= @workart.description_middle %></p>
+              <br><br>
+              <p class="description"><%= @workart.address %></p>
             </div>
-          </div>
 
-          <div data-panel-manager-target="long" class="d-none">
             <div class="container-below-image">
               <div class="icon-like-container">
                 <div class="icon-map">
@@ -136,7 +121,7 @@
                     <i class="fa-solid fa-map-location-dot"></i>
                   <% end %>
                 </div>
-                <div class="icon-map"><i id="openModal" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
+                <div class="icon-map"><i id="openModal2" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
                 <div class= "like-button">
                   <% if @user_workart %>
                     <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
@@ -150,32 +135,60 @@
                 </div>
               </div>
             </div>
+          </div>
 
+          <div data-panel-manager-target="long" class="d-none">
             <div class="workart-details">
               <h1 class="title"><%= @workart.workart_title %></h1>
+              <br>
+              <h2 class="author"><%= "by <b>#{@workart.primary_artist}</b>".html_safe %></h2>
               <div class="reading-time" id="reading-time">
+              <br>
               <i class="fa-solid fa-clock"></i>
                 <%= "#{( @workart.description_long.split(' ').size / 200.0 * 60 ).round} seconds of reading" %>
               </div>
               <br>
               <p class="description" id="description"><%= @workart.description_long %></p>
+              <br><br>
+              <p class="description"><%= @workart.address %></p>
+            </div>
+
+            <div class="container-below-image">
+              <div class="icon-like-container">
+                <div class="icon-map">
+                  <%= link_to workarts_path(@workart) do %>
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  <% end %>
+                </div>
+                <div class="icon-map"><i id="openModal3" alt="Ouvrir la modale" class="fa-solid fa-envelope"></i></div>
+                <div class= "like-button">
+                  <% if @user_workart %>
+                    <%= button_to user_workart_path(@user_workart), class: "like-button", method: :delete, data: {turbo: false} do %>
+                      <i class="fa-solid fa-heart"></i>
+                    <% end %>
+                  <% else %>
+                    <%= button_to workart_user_workarts_path(@workart), class: "like-button", method: :post, data: { turbo: false } do %>
+                      <i class="fa-regular fa-heart"></i>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="button-menu">
-            <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
+              <div class="btn-group shadow-sm rounded-pill" role="group" aria-label="Basic radio toggle button group">
+                  <div>
+                      <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
+                      <label class="btn btn-outline-primary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
+                  </div>
 
-              <div>
-                <input type="radio" class="btn-check active" name="btnradio" data-panel-manager-target="button" data-action="click->panel-manager#showShort" data-type="short" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-secondary rounded-start-pill" for="btnradio1"><i class="fa-solid fa-clock"></i> Short</label>
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
+                  <label class="btn btn-outline-primary" for="btnradio2"><i class="fa-solid fa-file"></i> Casual</label>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
+                  <label class="btn btn-outline-primary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-book"></i> Storytelled</label>
               </div>
-
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showMiddle" data-type="casual">
-              <label class="btn btn-outline-secondary" for="btnradio2"><i class="fa-solid fa-file"></i> Casual</label>
-
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" data-panel-manager-target="button" data-action="click->panel-manager#showLong" data-type="storytelled">
-              <label class="btn btn-outline-secondary rounded-end-pill" for="btnradio3"><i class="fa-solid fa-book"></i> Storytelled</label>
-            </div>
           </div>
 
         </div>
@@ -184,110 +197,68 @@
   </div>
 </div>
 
-<%# <script>
-  document.addEventListener('DOMContentLoaded', () => {
-      const panel = document.getElementById('slidingPanel');
-      const handle = document.getElementById('panelHandle');
-      const audioPlayers = document.querySelectorAll('audio');
-
-      let isDragging = false;
-      let startY;
-      let threshold = 50;
-
-      handle.addEventListener('mousedown', (e) => {
-          isDragging = true;
-          startY = e.clientY;
-          e.preventDefault();
-      });
-
-  handle.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const deltaY = startY - e.clientY;
-      if (deltaY > threshold) {
-          panel.classList.add('active');
-
-      } else if (deltaY < -threshold) {
-          panel.classList.remove('active');
-      }
-  });
-
-  handle.addEventListener('mouseup', () => {
-      isDragging = false;
-  });
-
-  handle.addEventListener('click', (e) => {
-      e.stopPropagation();
-          console.log("hey")
-      panel.classList.toggle('active');
-  });
-
-  handle.addEventListener('click', (e) => {
-      if (e.target === panel) {
-          // panel.classList.remove('active');
-      }
-  });
-
-  audioPlayers.forEach(audio => {
-      audio.addEventListener('click', (e) => {
-          e.stopPropagation();
-      });
-  });
-});
-
-</script> %>
 
 <div id="emailModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
 
-    <h3>Futur moi, <br>souviens-toi de ça !</h3>
+    <h3>To my future self, <br>remember this !</h3>
 
-  <div class="postcard-container">
-  <div class="postcard">
-    <div class="postcard-left">
-                <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+    <div class="container">
+      <div class="row postcard-frame shadow-sm border border-primary rounded overflow-hidden">
+        <div class="col-5 postcard-left position-relative p-0" style="background-color: #f8f9fa; height: 300px; overflow: hidden;">
+          <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
             <% cache @workart do %>
-              <%= image_tag @workart.image_url, class: "postcard-image" %>
+              <%= image_tag @workart.image_url, class: "w-100 h-100", style: "object-fit: cover; object-position: center 10%;" %>
             <% end %>
+          <% else %>
+            <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
+              No image available
+            </div>
           <% end %>
-      <div class="stamp">
-        <%= image_tag "stamp.png", class: "stamp-image" %>
+
+          <div class="stamp position-absolute top-0 end-0 m-2">
+            <%= image_tag "stamp.png", class: "img-fluid", style: "max-width: 60px; opacity: 0.9;" %>
+          </div>
+        </div>
+
+        <div class="col-7 postcard-right d-flex flex-column justify-content-between p-3">
+          <div>
+            <h3 class="h5 mb-2 text-dark"><%= @workart.workart_title %></h3>
+            <p class="text-muted small mb-3">by <%= @workart.primary_artist %></p>
+
+            <div class="border-skew mb-3">
+            <p><%= Date.today.strftime("%A %d %B %Y") %></p>
+              <p class="text-muted small"><%= @workart.address %></p>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <% if current_user %>
+              <p class="small text-dark">To : <strong><%= current_user.pseudo %></strong></p>
+            <% end %>
+          </div>
+          <small class="text-center">Sent with ❤ from ArtReveal</small>
+        </div>
       </div>
     </div>
-    <div class="postcard-right">
-      <h3 class="postcard-title"><%= @workart.workart_title %></h3>
-      <p class="postcard-artist">par <%= @workart.primary_artist %></p>
-      <p class="postcard-location"><%= @workart.address %></p>
-      <div class="postcard-footer">
-        <p class="postcard-date"><%= Date.current.strftime("%d %B %Y") %></p>
-        <% if current_user %>
-        <p class="postcard-recipient">Destinataire : <b><%= current_user.pseudo %></b></p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
 
-    <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
-      <div class="field">
-        <%= f.label :recipient, "Mon mail :" %>
-        <%= f.email_field :recipient, required: true %>
+    <div class="mt-4">
+      <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
+        <div class="field">
+          <%= f.label :content, "Message :" %>
+          <%= f.text_area :content, rows: 5, required: true, placeholder: "How did I feel about the piece of art ? Who was by my side ?" %>
+        </div>
       </div>
 
       <div class="field">
-        <%= f.label :content, "Message :" %>
-        <%= f.text_area :content, rows: 5, required: true, placeholder: "Ai-je aimé l'oeuvre ? Avec qui l'ai-je visité ?" %>
-      </div>
-
-      <div class="field">
-        <%= f.label :time_option, "Envoyer dans :" %>
+        <%= f.label :time_option, "Send in :" %>
         <div class="time-options">
           <% future_options = {
-            "6 mois" => 6.months.from_now,
-            "1 an" => 1.year.from_now,
-            "2 ans" => 2.years.from_now,
-            "5 ans" => 5.years.from_now,
-            "10 ans" => 10.years.from_now
+            "6 months" => 6.months.from_now,
+            "1 year" => 1.year.from_now,
+            "5 years" => 5.years.from_now,
+            "10 years" => 10.years.from_now
           } %>
 
           <% future_options.each do |label, date| %>
@@ -300,7 +271,7 @@
       </div>
 
       <div class="actions">
-        <%= f.submit "Programmer l'email" %>
+        <%= f.submit "Shoot me the postcard by email" %>
       </div>
     <% end %>
   </div>
@@ -310,7 +281,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const panel = document.getElementById('slidingPanel');
     const handle = document.getElementById('panelHandle');
-    const openModal = document.getElementById('openModal');
+    const openModal1 = document.getElementById('openModal1');
+    const openModal2 = document.getElementById('openModal2');
+    const openModal3 = document.getElementById('openModal3');
     const audioPlayers = document.querySelectorAll('audio');
     const modal = document.getElementById("emailModal");
     const closeBtn = document.querySelector(".close");
@@ -340,8 +313,18 @@ document.addEventListener('DOMContentLoaded', () => {
         isDragging = false;
     });
 
+    openModal1.addEventListener('click', (e) => {
+        e.stopPropagation();
+        modal.style.display = "block";
+    });
 
-    openModal.addEventListener('click', (e) => {
+    openModal2.addEventListener('click', (e) => {
+      console.log("MODAL 2")
+        e.stopPropagation();
+        modal.style.display = "block";
+      });
+
+    openModal3.addEventListener('click', (e) => {
         e.stopPropagation();
         modal.style.display = "block";
     });
@@ -385,9 +368,9 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmationDiv.className = "email-confirmation";
         confirmationDiv.innerHTML = `
             <div class="confirmation-icon">✓</div>
-            <h3>Mail programmé !</h3>
-            <p>Votre message vous sera envoyé à la date choisie.</p>
-            <button id="back-to-workart" class="btn-back">Retour à l'œuvre</button>
+            <h3>Email ready to go !</h3>
+            <p>See you later to remember this moment.</p>
+            <button id="back-to-workart" class="btn-back">Go back</button>
         `;
 
         formContent.innerHTML = '';
@@ -426,3 +409,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 </script>
+
+<div class="ball-container">
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+  <div class="ball"></div>
+</div>
