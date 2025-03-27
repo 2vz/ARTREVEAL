@@ -1,7 +1,9 @@
 {
   "background_color": "white",
   "description": "Point. Scan. Reveal the secrets of art in seconds.",
-  "display": "fullscreen",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
   "name": "ArtReveal",
   "icons": [
     <% files = Dir.entries(Rails.root.join("app/assets/images/icons/")).select {|f| !File.directory? f} %>
