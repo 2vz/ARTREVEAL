@@ -228,15 +228,11 @@
             <p class="text-muted small mb-3">by <%= @workart.primary_artist %></p>
 
             <div class="border-skew mb-3">
-            <p><%= Date.today.strftime("%A %d %B %Y") %></p>
-              <p class="text-muted small"><%= @workart.address %></p>
+            <p>Discovered on <%= Date.today.strftime("%A %d %B %Y") %></p>
+              <% if current_user %>
+              <p>by <strong><%= current_user.pseudo %></strong> !</p>
+              <% end %>
             </div>
-          </div>
-
-          <div class="text-end">
-            <% if current_user %>
-              <p class="small text-dark">To : <strong><%= current_user.pseudo %></strong></p>
-            <% end %>
           </div>
           <small class="text-center">Sent with ❤ from ArtReveal</small>
         </div>
@@ -247,7 +243,7 @@
       <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
         <div class="field">
           <%= f.label :content, "Message :" %>
-          <%= f.text_area :content, rows: 5, required: true, placeholder: "How did I feel about the piece of art ? Who was by my side ?" %>
+          <%= f.text_area :content, rows: 5, required: true, placeholder: "How did I feel about the artwork ? Who was by my side ?" %>
         </div>
       </div>
 
