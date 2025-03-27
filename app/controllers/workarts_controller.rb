@@ -145,12 +145,12 @@ def scan
 
     # si ce n'est pas une œuvre d'art, inutile de valider le reste
     if result.is_artwork == false
-      return redirect_to root_path(alert: true)
+      return redirect_to scan_path(alert: true)
     end
 
     # sinon, vérifier que le résultat est bien formaté
     unless valid_openai_result?(result)
-      return redirect_to root_path(ai_error: true)
+      return redirect_to scan_path(ai_error: true)
     end
 
     if result.is_artwork
@@ -167,16 +167,16 @@ def scan
       end
 
       if @workart.nil? || !@workart.persisted?
-        return redirect_to root_path(ai_error: true)
+        return redirect_to scan_path(ai_error: true)
       end
 
       redirect_to workart_path(@workart)
     else
-      redirect_to root_path(alert: true)
+      redirect_to scan_path(alert: true)
     end
 
   rescue JSON::ParserError, OpenAI::Error, Faraday::BadRequestError => e
-    redirect_to root_path(ai_error: true)
+    redirect_to scan_path(ai_error: true)
   end
 end
 
