@@ -4,8 +4,8 @@ UserWorkart.destroy_all
 
 require 'faker'
 
-# USERS : 5
-5.times do |i|
+# USERS : 100
+100.times do |i|
   puts "Creating user #{i + 1}"
 
   first_name = Faker::Name.first_name
@@ -13,7 +13,8 @@ require 'faker'
   email = "#{first_name.downcase}.#{last_name.downcase}@example.com"
   pseudo = "#{first_name.downcase}_#{last_name.downcase}"
 
-  file = File.open(Rails.root.join("app/assets/images/pdp#{i + 1}.jpg"))
+  avatar_number = rand(1..5)
+  file = File.open(Rails.root.join("app/assets/images/pdp#{avatar_number}.jpg"))
 
   user = User.new(
     first_name: first_name,
@@ -23,7 +24,7 @@ require 'faker'
     pseudo: pseudo
   )
 
-  user.photo.attach(io: file, filename: "avatar.png", content_type: "image/jpg")
+  user.photo.attach(io: file, filename: "pdp#{avatar_number}.jpg", content_type: "image/jpg")
   user.save
 end
 
@@ -123,8 +124,14 @@ workarts = [
 
 # USER_WORKART
 User.all.each do |user|
-  workarts.take(3).each do |workart|
-    puts "Associating workarts to users"
+
+  num_likes = rand(3..8)
+
+
+  random_workarts = workarts.shuffle.take(num_likes)
+
+  random_workarts.each do |workart|
+    puts "Associating workart to user with like"
     UserWorkart.create!(
       user:,
       workart:,

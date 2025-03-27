@@ -6,15 +6,15 @@
 
 <!-- Bouton positionné en haut à gauche avec un z-index élevé -->
 <!-- Bouton pour afficher la liste -->
-<button id="like-list-button" style="position: fixed; top: 10px; left: 10px; z-index: 1000; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
-  Best Workarts
+<button id="like-list-button" style="position: fixed; top: 10px; left: 10px; z-index: 1000; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 20px;">
+  Most popular artworks 🔥
 </button>
 
 <!-- Liste des œuvres affichée sous le bouton -->
 
 <!-- Liste des œuvres affichée sous le bouton -->
 <!-- Liste des œuvres affichée sous le bouton -->
-<div id="like-list" style="display: none; position: fixed; top: 60px; left: 10px; z-index: 2000; background-color: white; max-height: 300px; overflow-y: auto; border-radius: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 250px;">
+<div id="like-list" style="display: none; position: fixed; top: 60px; left: 10px; z-index: 2000; background-color: white; max-height: 300px; overflow-y: auto; border-radius: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 250px;">
   <ul id="workarts-list" style="list-style-type: none; padding: 0; margin: 0;">
     <% sorted_workarts = @workarts_with_likes.sort_by { |workart| -workart[:likes_count] } %>
     <% max_likes = sorted_workarts.first[:likes_count] unless sorted_workarts.empty? %>
@@ -36,7 +36,7 @@
               <h3 style="font-size: 14px; margin: 0;"><%= workart[:workart_title] %></h3>
             </div>
             <!-- Compteur de likes -->
-            <p style="font-size: 12px; color: #888; margin-top: 5px;">Likes: <%= workart[:likes_count] %></p>
+            <p style="font-size: 12px; color: #888; margin-top: 5px;"><%= workart[:likes_count] %> <%= workart[:likes_count] <= 1 ? 'fan' : 'fans' %> liked</p>
           </div>
         </li>
       <% end %>
