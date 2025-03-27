@@ -21,24 +21,20 @@
 
     <% sorted_workarts.each do |workart| %>
       <% if workart[:image_url].present? && workart[:image_url] != "" %>
-        <li class="workart-item" style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
-          <!-- Image cliquable menant à la page show -->
-          <a href="<%= workart_path(workart[:id]) %>" data-turbo="false">
+        <a href="<%= workart_path(workart[:id]) %>" data-turbo="false" style="text-decoration: none; color: inherit;">
+          <li class="workart-item" style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer;">
             <img src="<%= workart[:image_url] %>" alt="<%= workart[:workart_title] %>" style="width: 100px; height: auto; display: block; margin-right: 10px;">
-          </a>
-          <div style="display: flex; flex-direction: column; width: 100%;">
-            <div style="display: flex; align-items: center;">
-              <!-- Icône de flamme si l'œuvre a le plus de likes -->
-              <% if workart[:likes_count] == max_likes %>
-                <span style="font-size: 20px; color: #f39c12; margin-right: 5px;">🔥</span>
-              <% end %>
-              <!-- Titre de l'œuvre -->
-              <h3 style="font-size: 14px; margin: 0;"><%= workart[:workart_title] %></h3>
+            <div style="display: flex; flex-direction: column; width: 100%;">
+              <div style="display: flex; align-items: center;">
+                <% if workart[:likes_count] == max_likes %>
+                  <span style="font-size: 20px; color: #f39c12; margin-right: 5px;">🔥</span>
+                <% end %>
+                <h3 style="font-size: 14px; margin: 0;"><%= workart[:workart_title] %></h3>
+              </div>
+              <p style="font-size: 12px; color: #888; margin-top: 5px;"><%= workart[:likes_count] %> <%= workart[:likes_count] <= 1 ? 'fan' : 'fans' %> liked</p>
             </div>
-            <!-- Compteur de likes -->
-            <p style="font-size: 12px; color: #888; margin-top: 5px;"><%= workart[:likes_count] %> <%= workart[:likes_count] <= 1 ? 'fan' : 'fans' %> liked</p>
-          </div>
-        </li>
+          </li>
+        </a>
       <% end %>
     <% end %>
   </ul>
