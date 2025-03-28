@@ -197,81 +197,7 @@
   </div>
 </div>
 
-
-<div id="emailModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-
-    <h2>To my future self, <br>remember this !</h2><br>
-
-    <div class="container">
-      <div class="row postcard-frame shadow-sm border border-primary rounded overflow-hidden">
-        <div class="col-5 postcard-left position-relative p-0" style="background-color: #f8f9fa; height: 300px; overflow: hidden;">
-          <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
-            <% cache @workart do %>
-              <%= image_tag @workart.image_url, class: "w-100 h-100", style: "object-fit: cover; object-position: center 10%;" %>
-            <% end %>
-          <% else %>
-            <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
-              No image available
-            </div>
-          <% end %>
-
-          <div class="stamp position-absolute top-0 end-0 m-2">
-            <%= image_tag "stamp.png", class: "img-fluid", style: "max-width: 60px; opacity: 0.9;" %>
-          </div>
-        </div>
-
-        <div class="col-7 postcard-right d-flex flex-column justify-content-between p-3">
-          <div>
-            <h3 class="h5 mb-2 text-dark"><%= @workart.workart_title %></h3>
-            <p class="text-muted small mb-3">by <%= @workart.primary_artist %></p>
-
-            <div class="border-skew mb-3">
-            <p>Discovered on <%= Date.today.strftime("%A %d %B %Y") %></p>
-              <% if current_user %>
-              <p>by <strong><%= current_user.pseudo %></strong> !</p>
-              <% end %>
-            </div>
-          </div>
-          <small class="text-center">Sent with ❤ from ArtReveal</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
-        <div class="field">
-          <%= f.label :content, "Message :" %>
-          <%= f.text_area :content, rows: 5, required: true, placeholder: "How did I feel about the artwork ? Who was by my side ?" %>
-        </div>
-      </div>
-
-      <div class="field">
-        <%= f.label :time_option, "Send in :" %>
-        <div class="time-options">
-          <% future_options = {
-            "6 months" => 6.months.from_now,
-            "1 year" => 1.year.from_now,
-            "5 years" => 5.years.from_now,
-            "10 years" => 10.years.from_now
-          } %>
-
-          <% future_options.each do |label, date| %>
-            <div class="time-option">
-              <%= f.radio_button :send_at, date.to_date, id: "option_#{label.parameterize}", required: true %>
-              <%= f.label :send_at, label, value: date.to_date, for: "option_#{label.parameterize}" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="actions">
-        <%= f.submit "Shoot me the postcard by email" %>
-      </div>
-    <% end %>
-  </div>
-</div>
+<%= render 'workarts/email_modal' %>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -364,8 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmationDiv.className = "email-confirmation";
         confirmationDiv.innerHTML = `
             <div class="confirmation-icon">✓</div>
-            <h3>Email ready to go !</h3>
-            <p>See you later to remember this moment.</p>
+            <h4>Email ready to go !</h4>
+            <p>Catch you later 💌</p>
             <button id="back-to-workart" class="btn-back">Go back</button>
         `;
 
