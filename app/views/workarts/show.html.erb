@@ -34,43 +34,6 @@
 
     <!-- Contrôleur Stimulus panel-manager -->
     <div data-controller="panel-manager" class="panel-manager">
-
-      <!-- Lecteurs audio (Short / Middle / Long) -->
-      <div class="audio-players">
-        <% if @audio_paths[:short].present? %>
-          <div data-panel-manager-target="shortContainer">
-            <%= render partial: 'audio_player', locals: {
-              player_id: 'short',
-              custom_class: 'short',
-              audio_target: 'audioShort',
-              audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
-            } %>
-          </div>
-        <% end %>
-
-        <% if @audio_paths[:middle].present? %>
-          <div data-panel-manager-target="middleContainer" class="d-none">
-            <%= render partial: 'audio_player', locals: {
-              player_id: 'middle',
-              custom_class: 'middle',
-              audio_target: 'audioMiddle',
-              audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
-            } %>
-          </div>
-        <% end %>
-
-        <% if @audio_paths[:long].present? %>
-          <div data-panel-manager-target="longContainer" class="d-none">
-            <%= render partial: 'audio_player', locals: {
-              player_id: 'long',
-              custom_class: 'long',
-              audio_target: 'audioLong',
-              audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
-            } %>
-          </div>
-        <% end %>
-      </div>
-
       <!-- NOUVEAU bloc de boutons (Short / Casual / Storytelled) 
            placé entre le titre et la lecture pour le design voulu -->
       <div class="tag-buttons-group" role="group" aria-label="Type de description">
@@ -237,6 +200,42 @@
             </div>
           </div>
         </div>
+      </div>
+
+    <!-- Lecteurs audio (Short / Middle / Long) -->
+      <div class="audio-players">
+        <% if @audio_paths[:short].present? %>
+          <div data-panel-manager-target="shortContainer">
+            <%= render partial: 'audio_player', locals: {
+              player_id: 'short',
+              custom_class: 'short',
+              audio_target: 'audioShort',
+              audio_source: Rails.env.local? ? asset_path(@audio_paths[:short]) : @audio_paths[:short]
+            } %>
+          </div>
+        <% end %>
+
+        <% if @audio_paths[:middle].present? %>
+          <div data-panel-manager-target="middleContainer" class="d-none">
+            <%= render partial: 'audio_player', locals: {
+              player_id: 'middle',
+              custom_class: 'middle',
+              audio_target: 'audioMiddle',
+              audio_source: Rails.env.local? ? asset_path(@audio_paths[:middle]) : @audio_paths[:middle]
+            } %>
+          </div>
+        <% end %>
+
+        <% if @audio_paths[:long].present? %>
+          <div data-panel-manager-target="longContainer" class="d-none">
+            <%= render partial: 'audio_player', locals: {
+              player_id: 'long',
+              custom_class: 'long',
+              audio_target: 'audioLong',
+              audio_source: Rails.env.local? ? asset_path(@audio_paths[:long]) : @audio_paths[:long]
+            } %>
+          </div>
+        <% end %>
       </div>
 
     </div><!-- Fin du panel-manager -->

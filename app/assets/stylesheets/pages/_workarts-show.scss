@@ -3,6 +3,7 @@
 html,
 body {
   overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -49,7 +50,7 @@ body {
   background-color: white;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  transform: translateY(90%);
+  transform: translateY(87%);
   height: 90%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -58,6 +59,10 @@ body {
 
 .sliding-panel.active {
   transform: translateY(0);
+}
+
+.sliding-panel.active .panel-content {
+  margin-top: -4rem; // Ajuste la valeur pour remonter plus ou moins
 }
 
 .sliding-panel:not(.active) .panel-content {
@@ -76,7 +81,7 @@ body {
   &::before {
     content: "";
     position: absolute;
-    top: 50%;
+    top: 15%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 40px;
@@ -84,6 +89,11 @@ body {
     background-color: var(--icon-color);
     border-radius: 2px;
   }
+}
+
+.panel-title-handle {
+  margin-top: 1.75rem; /* Espace entre le haut du handle et le titre */
+  text-align: center; /* (Optionnel) Pour centrer horizontalement le titre */
 }
 
 /* Si besoin, définissez la classe d-none */
@@ -155,13 +165,12 @@ body {
   letter-spacing: 0.5px;
 }
 
+.workart-details {
+  margin-top: 0.75rem;
+}
 .icon-map i {
   font-size: 23px;
   color: #798086;
-}
-
-.workart-details {
-  padding: 15px;
 }
 
 .title {
@@ -191,21 +200,20 @@ body {
   z-index: 1;
   position: relative;
   display: inline-block;
-  padding-left: 10px;
 }
 
-.description::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 6px;
-  height: 100%;
-  background-color: var(--primary-color);
-  transform: skewY(-5deg);
-  z-index: -1;
-  border-radius: 2px;
-}
+// .description::before {
+//   content: "";
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   width: 6px;
+//   height: 100%;
+//   background-color: var(--primary-color);
+//   transform: skewY(-5deg);
+//   z-index: -1;
+//   border-radius: 2px;
+// }
 
 // MINI BALLS BACKGROUND
 
@@ -394,11 +402,13 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.sliding-panel:not(.active) .workart-title-block {
+  padding-left: 2.5rem;
+}
+
 .tag-buttons-group {
   display: flex;
   gap: 0.6rem;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
 }
 
 .tag-button {
