@@ -1,0 +1,168 @@
+<div id="emailModal" class="modal d-none" data-uglyjs-target="emailModal">
+
+  <div class="modal-content">
+
+    <span class="close">&times;</span>
+
+    <div class="typing-container">
+        <h2 class="typing-text fade-in"><i>To my future self,</i> <b>remember this !</b></h2>
+    </div>
+    <br>
+    <div class="container">
+      <div class="row postcard-frame shadow-sm overflow-hidden">
+        <div class="col-5 postcard-left position-relative p-0" style="background-color: #f8f9fa; height: 300px; overflow: hidden;">
+          <% if @workart.image_url.present? && @workart.image_url.match?(/\Ahttps?:\/\/[\S]+\.(jpg|jpeg|png|gif)\z/i) %>
+            <% cache @workart do %>
+              <%= image_tag @workart.image_url, class: "w-100 h-100", style: "object-fit: cover; object-position: center 10%;" %>
+            <% end %>
+          <% else %>
+            <div class="w-100 h-100 bg-light d-flex align-items-center justify-content-center text-muted">
+              No image available
+            </div>
+          <% end %>
+        </div>
+
+        <div class="col-7 postcard-right d-flex flex-column justify-content-between p-3">
+          <div>
+          <div class="floating-content">
+            <h3 class="h5 mb-2 text-black"><%= @workart.workart_title %></h3>
+            <p class="text-black small mb-3">by <%= @workart.primary_artist %></p>
+            </div>
+
+            <div class="border-skew mb-3">
+            <p>Discovered on <strong><%= Date.today.strftime("%A %d %B %Y") %></strong>
+              <% if current_user %>
+              by <strong><%= current_user.pseudo %></strong> !</p>
+              <% end %>
+            </div>
+          </div>
+          <div class="postcard-message">
+          </div>
+          <small class="text-center">Sent with ❤ from ArtReveal</small>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="mt-4">
+      <%= form_with url: schedule_email_workart_path(@workart), 
+                    method: :post, 
+                    data: { 
+                      action: 'submit->uglyjs#submitEmailForm',
+                      uglyjs_target: 'emailForm'
+                    } do |f| %>
+        <div class="field">
+          <%= f.label :content, "Message :" %>
+          <%= f.text_area :content, rows: 5, required: true, placeholder: "How did I feel about the artwork ? Who was by my side ?" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :time_option, "Send in :" %>
+          <div class="time-options">
+            <% future_options = {
+              "6 months" => 6.months.from_now,
+              "1 year" => 1.year.from_now,
+              "5 years" => 5.years.from_now,
+              "10 years" => 10.years.from_now
+            } %>
+
+            <% future_options.each do |label, date| %>
+              <div class="time-option">
+                <%= f.radio_button :send_at, date.to_date, id: "option_#{label.parameterize}", required: true %>
+                <%= f.label :send_at, label, value: date.to_date, for: "option_#{label.parameterize}" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Shoot me the postcard by email" %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<style>
+    .typed-message {
+        opacity: 0;
+        animation: fadeIn 2s ease-out forwards;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .postcard-message {
+        min-height: 50px; /* Espace réservé pour le message */
+        font-family: 'Caveat', cursive;
+        font-size:1.5rem;
+    }
+
+    .floating-content h3, .floating-content p {
+  animation: floatEffect 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Léger décalage pour que les deux éléments ne flottent pas exactement en même temps */
+.floating-content p {
+  animation-delay: 0.5s;
+}
+
+@keyframes floatEffect {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const messageTextarea = document.querySelector('textarea[name="content"]');
+      const postCardMessage = document.querySelector('.postcard-message');
+
+      // Fonction pour animer le texte
+      function typeMessage(text) {
+          // Réinitialiser le message
+          postCardMessage.innerHTML = '';
+
+          // Créer un élément avec la classe d'animation
+          const typedElement = document.createElement('p');
+          typedElement.classList.add('typed-message');
+          postCardMessage.appendChild(typedElement);
+
+          // Animation de typing
+          let index = 0;
+          function typeNextChar() {
+              if (index < text.length) {
+                  typedElement.textContent += text.charAt(index);
+                  index++;
+                  setTimeout(typeNextChar, 50); // Vitesse de typing
+              }
+          }
+          typeNextChar();
+      }
+
+      // Écouter les changements dans le textarea
+      messageTextarea.addEventListener('input', (e) => {
+          typeMessage(e.target.value);
+      });
+  });
+</script>

@@ -6,7 +6,7 @@
 
 <!-- Bouton positionné en haut à gauche avec un z-index élevé -->
 <!-- Bouton pour afficher la liste -->
-<button id="like-list-button" style="position: fixed; top: 10px; left: 10px; z-index: 1000; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 20px;">
+<button id="like-list-button" style="position: fixed;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); top: 10px; left: 10px; z-index: 1000; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 20px;">
   Most popular artworks 🔥
 </button>
 
@@ -23,13 +23,16 @@
       <% if workart[:image_url].present? && workart[:image_url] != "" %>
         <a href="<%= workart_path(workart[:id]) %>" data-turbo="false" style="text-decoration: none; color: inherit;">
           <li class="workart-item" style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd; cursor: pointer;">
-            <img src="<%= workart[:image_url] %>" alt="<%= workart[:workart_title] %>" style="width: 100px; height: auto; display: block; margin-right: 10px;">
+            <img src="<%= workart[:image_url] %>" alt="<%= workart[:workart_title] %>" style="width: 100px; height: auto; display: block; margin-right: 10px; border-radius:10px;">
             <div style="display: flex; flex-direction: column; width: 100%;">
               <div style="display: flex; align-items: center;">
                 <% if workart[:likes_count] == max_likes %>
-                  <span style="font-size: 20px; color: #f39c12; margin-right: 5px;">🔥</span>
+                  <div class="fire-container">
+                    <span class="flame" style="font-size: 20px;  color: #f39c12; margin-right: 5px;">🔥</span>
+                    <div class="glow"></div>
+                  </div>
                 <% end %>
-                <h3 style="font-size: 14px; margin: 0;"><%= workart[:workart_title] %></h3>
+                <h3 style="font-size: 14px;font-family:'Poppins',sans-serif; margin: 0;"><%= workart[:workart_title] %></h3>
               </div>
               <p style="font-size: 12px; color: #888; margin-top: 5px;"><%= workart[:likes_count] %> <%= workart[:likes_count] <= 1 ? 'fan' : 'fans' %> liked</p>
             </div>
@@ -145,7 +148,7 @@
           </div>
         <% end %>
         <div>
-          <h3 style="margin: 0; font-size: 16px;"><%= marker[:title] %></h3>
+          <h3 style="margin: 0; font-size: 16px;font-family:'Poppins',sans-serif;"><%= marker[:title] %></h3>
           <p style="margin: 5px 0 0; font-size: 14px; color: #666;"><%= marker[:address] %></p>
         </div>
       </a>
@@ -258,4 +261,67 @@
   transition: transform 1s ease-out, opacity 0.3s ease 0.7s;
   pointer-events: none;
 }
+
+
+
+
+
+/* FLAMME */
+.fire-container {
+            position: relative;
+            display: inline-block;
+            padding: 5px;
+        }
+
+        .flame {
+            font-size: 30px;
+            color: #f39c12;
+            position: relative;
+            display: inline-block;
+            animation: flicker 2s infinite alternate,
+                       sway 2.5s ease-in-out infinite;
+            transform-origin: bottom center;
+            text-shadow: 0 0 10px rgba(255, 100, 0, 0.6),
+                         0 0 20px rgba(255, 100, 0, 0.4),
+                         0 0 30px rgba(255, 60, 0, 0.2);
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            20% { opacity: 0.92; }
+            40% { opacity: 0.96; }
+            60% { opacity: 0.9; }
+            80% { opacity: 0.94; }
+        }
+
+        @keyframes sway {
+            0% { transform: rotate(-2deg) scale(0.99); }
+            20% { transform: rotate(3deg) scale(1.01); }
+            40% { transform: rotate(-1.5deg) scale(0.98); }
+            60% { transform: rotate(2.5deg) scale(1.01); }
+            80% { transform: rotate(-1deg) scale(0.99); }
+            100% { transform: rotate(-2deg) scale(0.99); }
+        }
+
+
+        /* Effet de lueur autour de la flamme - réduit */
+        .glow {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.2), transparent 50%);
+            border-radius: 50%;
+            filter: blur(3px);
+            z-index: -1;
+            animation: pulse 2.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.05); opacity: 0.6; }
+        }
+
+
 </style>

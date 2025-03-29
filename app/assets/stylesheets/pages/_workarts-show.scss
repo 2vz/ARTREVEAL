@@ -61,13 +61,9 @@ body {
   transform: translateY(0);
 }
 
-.sliding-panel.active .panel-content {
-  margin-top: -4rem; // Ajuste la valeur pour remonter plus ou moins
-}
-
-.sliding-panel:not(.active) .panel-content {
-  padding-top: 2.5rem;
-}
+// .sliding-panel.active .panel-content {
+//   margin-top: -4rem; // Ajuste la valeur pour remonter plus ou moins
+// }
 
 .panel-handle {
   width: 100%;
@@ -400,10 +396,6 @@ body {
   align-items: flex-start; // ou center si tu veux centré
   gap: 0.4rem;
   margin-bottom: 1.5rem;
-}
-
-.sliding-panel:not(.active) .workart-title-block {
-  padding-left: 2.5rem;
 }
 
 .tag-buttons-group {
