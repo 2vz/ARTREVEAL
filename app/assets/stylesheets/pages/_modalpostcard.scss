@@ -1,11 +1,9 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap");
 
 /* Styles pour la modal d'email */
 #emailModal.modal {
   position: fixed;
-  font-family:'Poppins',sans-serif;
+  font-family: "Poppins", sans-serif;
   z-index: 1000;
   left: 0;
   top: 0;
@@ -16,30 +14,28 @@
 }
 
 .modal-content h3 {
-  font-family:'Poppins',sans-serif;
+  font-family: "Poppins", sans-serif;
   color: var(--primary-color);
 }
 
 .modal-content h4 {
-  font-family:'Poppins',sans-serif;
+  font-family: "Poppins", sans-serif;
   color: var(--primary-color);
 }
 
 .modal-content h2 {
-  font-family:'Poppins',sans-serif;
+  font-family: "Poppins", sans-serif;
   color: var(--primary-color);
 }
-
-
 
 #emailModal .modal-content {
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  font-family:'Poppins',sans-serif;
+  font-family: "Poppins", sans-serif;
   padding: 32px;
   width: 90%;
-  color:black;
+  color: black;
   max-width: 520px;
   position: relative;
   text-align: center;
@@ -50,8 +46,14 @@
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 #emailModal .close {
@@ -85,7 +87,7 @@
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--primary-color);;
+  color: var(--primary-color);
 }
 
 #emailModal input[type="email"],
@@ -119,7 +121,7 @@
 }
 
 #emailModal input[type="submit"] {
-  background-color: var(--primary-color);;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 8px;
@@ -137,7 +139,6 @@
 #emailModal input[type="submit"]:active {
   transform: scale(0.98);
 }
-
 
 #emailModal .time-options {
   display: flex;
@@ -223,7 +224,8 @@
 }
 
 @keyframes pulseEffect {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.2;
     transform: translate(-50%, -50%) scale(0.9);
   }
@@ -232,10 +234,6 @@
     transform: translate(-50%, -50%) scale(1.1);
   }
 }
-
-
-
-
 
 // #email confirmation
 
@@ -288,37 +286,39 @@
   }
 }
 
+// postcard
 
-
-
-
-  // postcard
-
-  @media (max-width: 576px) {
-
-    .postcard-left, .postcard-right {
-      width: 100%;
-    }
-
-    .postcard-left {
-      height: 180px;
-      border-right: none;
-      // border-bottom: 2px dashed #d0cbb8;
-    }
-
-
-    .postcard-right {
-      padding-top: 20px;
-    }
+@media (max-width: 576px) {
+  .postcard-left,
+  .postcard-right {
+    width: 100%;
   }
 
+  .postcard-left {
+    height: 180px;
+    border-right: none;
+    // border-bottom: 2px dashed #d0cbb8;
+  }
 
-  // TITRE POSTCARD
+  .postcard-right {
+    padding-top: 20px;
+  }
+}
 
-  .fade-in {
-    animation: simpleFade 2s ease-in-out forwards;
+// TITRE POSTCARD
+
+.fade-in {
+  animation: simpleFade 2s ease-in-out forwards;
 }
 @keyframes simpleFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.panel-title-content {
+  padding-top: 2.2rem;
 }

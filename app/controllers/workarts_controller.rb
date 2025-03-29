@@ -113,12 +113,21 @@ def schedule_email
   content = params[:content]
   send_at = Time.parse(params[:send_at])
 
-  # Vérifiez que la date est dans le futur
-  if send_at > Time.current
-    # ScheduledEmailJob.set(wait_until: send_at).perform_later(recipient, subject, content)
-    redirect_to @your_resource, notice: "Email programmé pour #{send_at.strftime('%d/%m/%Y à %H:%M')}"
-  else
-    redirect_to @your_resource, alert: "La date doit être dans le futur"
+  time_distance = helpers.distance_of_time_in_words(Time.current, send_at)
+
+  respond_to do |format|
+    if send_at > Time.current
+      # ScheduledEmailJob.set(wait_until: send_at).perform_later(recipient, subject, content)
+      format.html { redirect_to @your_resource, notice: "Email programmé pour #{send_at.strftime('%d/%m/%Y à %H:%M')}" }
+      format.json do 
+        render json: { ok: :ok, message: "Email ready to go, see you in #{time_distance}" }
+      end
+    else
+      format.html { redirect_to @your_resource, alert: "La date doit être dans le futur" }
+      format.json do 
+        render json: { ok: :not_ok, message: 'The email could not be scheduled, please review the errors' }
+      end
+    end
   end
 end
 

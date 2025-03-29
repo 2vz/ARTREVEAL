@@ -1,4 +1,4 @@
-<div id="emailModal" class="modal">
+<div id="emailModal" class="modal d-none" data-uglyjs-target="emailModal">
 
   <div class="modal-content">
 
@@ -47,7 +47,12 @@
 
 
     <div class="mt-4">
-      <%= form_with url: schedule_email_workart_path(@workart), method: :post do |f| %>
+      <%= form_with url: schedule_email_workart_path(@workart), 
+                    method: :post, 
+                    data: { 
+                      action: 'submit->uglyjs#submitEmailForm',
+                      uglyjs_target: 'emailForm'
+                    } do |f| %>
         <div class="field">
           <%= f.label :content, "Message :" %>
           <%= f.text_area :content, rows: 5, required: true, placeholder: "How did I feel about the artwork ? Who was by my side ?" %>
@@ -129,35 +134,35 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const messageTextarea = document.querySelector('textarea[name="content"]');
-    const postCardMessage = document.querySelector('.postcard-message');
+  document.addEventListener('DOMContentLoaded', () => {
+      const messageTextarea = document.querySelector('textarea[name="content"]');
+      const postCardMessage = document.querySelector('.postcard-message');
 
-    // Fonction pour animer le texte
-    function typeMessage(text) {
-        // Réinitialiser le message
-        postCardMessage.innerHTML = '';
+      // Fonction pour animer le texte
+      function typeMessage(text) {
+          // Réinitialiser le message
+          postCardMessage.innerHTML = '';
 
-        // Créer un élément avec la classe d'animation
-        const typedElement = document.createElement('p');
-        typedElement.classList.add('typed-message');
-        postCardMessage.appendChild(typedElement);
+          // Créer un élément avec la classe d'animation
+          const typedElement = document.createElement('p');
+          typedElement.classList.add('typed-message');
+          postCardMessage.appendChild(typedElement);
 
-        // Animation de typing
-        let index = 0;
-        function typeNextChar() {
-            if (index < text.length) {
-                typedElement.textContent += text.charAt(index);
-                index++;
-                setTimeout(typeNextChar, 50); // Vitesse de typing
-            }
-        }
-        typeNextChar();
-    }
+          // Animation de typing
+          let index = 0;
+          function typeNextChar() {
+              if (index < text.length) {
+                  typedElement.textContent += text.charAt(index);
+                  index++;
+                  setTimeout(typeNextChar, 50); // Vitesse de typing
+              }
+          }
+          typeNextChar();
+      }
 
-    // Écouter les changements dans le textarea
-    messageTextarea.addEventListener('input', (e) => {
-        typeMessage(e.target.value);
-    });
-});
+      // Écouter les changements dans le textarea
+      messageTextarea.addEventListener('input', (e) => {
+          typeMessage(e.target.value);
+      });
+  });
 </script>
