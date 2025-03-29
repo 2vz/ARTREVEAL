@@ -41,7 +41,7 @@ workarts = [
   },
   {
     primary_artist: "Vincent van Gogh",
-    workart_title: "The Starry Night",
+    workart_title: "Starry Night",
     description_short: "Vincent van Gogh's 1889 masterpiece depicting a turbulent night sky with swirling clouds and brilliant stars, created during his time at the Saint-Paul-de-Mausole asylum, embodying the raw emotional intensity of Post-Impressionist art.",
     description_middle: "Painted in 1889 while voluntarily institutionalized in Saint-Rémy-de-Provence, The Starry Night is a profound expression of Van Gogh's inner emotional landscape. The painting transforms a nocturnal landscape into a dynamic, almost living composition, with powerful brushstrokes that convey movement, emotion, and psychological depth.",
     description_long: "The Starry Night emerges from a deeply personal moment in Van Gogh's life, created during his stay at the Saint-Paul-de-Mausole asylum. The painting transcends mere landscape, becoming a powerful visualization of the artist's inner turmoil and unique perception of the world. Bold, swirling brushstrokes and vibrant colors create a sense of cosmic energy and emotional intensity.",
