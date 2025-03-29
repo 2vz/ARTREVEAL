@@ -1,22 +1,23 @@
 class UserWorkartsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     @workart = Workart.find(params[:workart_id])
-    @user_workart = UserWorkart.new(
-      user: current_user,
-      workart: @workart,
-      liked: true
-    )
+    @user_workart = current_user.user_workarts.create(workart: @workart, liked: true)
 
-    if @user_workart.save
-      redirect_to workart_path(@workart)
-    else
-      render "workarts/show"
+    respond_to do |format|
+      format.json { render json: { id: @user_workart.id }, status: :created }
+      format.html { redirect_to @workart }
     end
   end
 
   def destroy
-    @user_workart = UserWorkart.find(params[:id])
+    @user_workart = current_user.user_workarts.find(params[:id])
     @user_workart.destroy
-    redirect_to workart_path(@user_workart.workart), status: :see_other
+
+    respond_to do |format|
+      format.json { head :no_content }
+      format.html { redirect_to @user_workart.workart }
+    end
   end
 end

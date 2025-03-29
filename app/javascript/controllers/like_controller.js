@@ -1,16 +1,61 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  toggle() {
-    const heartPath = document.getElementById('heart-path');
+  static values = {
+    liked: Boolean,
+    workartId: Number,
+    userWorkartId: Number,
+  };
 
-    // Vérifie si le cœur est rempli ou non
-    if (heartPath.getAttribute('fill') === 'none') {
-      heartPath.setAttribute('fill', 'white'); // Remplir le cœur en blanc
-      heartPath.setAttribute('stroke', 'pink'); // Change le tracé en rose
+  toggleLike(event) {
+    event.preventDefault();
+
+    if (this.likedValue) {
+      // Supprimer le like
+      fetch(`/user_workarts/${this.userWorkartIdValue}`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
+            .content,
+          Accept: "application/json",
+        },
+        credentials: "same-origin",
+      }).then((response) => {
+        if (response.ok) {
+          this.likedValue = false;
+          this.updateIcon(false);
+        }
+      });
     } else {
-      heartPath.setAttribute('fill', 'none'); // Retirer le remplissage du cœur
-      heartPath.setAttribute('stroke', 'white'); // Tracé blanc
+      // Créer le like
+      fetch(`/workarts/${this.workartIdValue}/user_workarts`, {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
+            .content,
+          Accept: "application/json",
+        },
+        credentials: "same-origin",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.likedValue = true;
+          this.userWorkartIdValue = data.id;
+          this.updateIcon(true);
+        });
+    }
+  }
+
+  updateIcon(liked) {
+    const icon = this.element.querySelector("i");
+    if (!icon) return;
+
+    if (liked) {
+      icon.classList.remove("fa-regular");
+      icon.classList.add("fa-solid");
+    } else {
+      icon.classList.remove("fa-solid");
+      icon.classList.add("fa-regular");
     }
   }
 }
